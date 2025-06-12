@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Carly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Holtwood One SC', Arial, sans-serif;
+            background: url('https://scontent.fhan14-3.fna.fbcdn.net/v/t1.15752-9/506757427_656819650715915_3064120748258833993_n.jpg?stp=dst-jpg_s2048x2048_tt6&_nc_cat=111&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHejaqFvi07G87rmC4UmLW3Ow3uF44KskI7De4XjgqyQkCvZdBxbypj_r6NLpOrKjqN-d3T41BfeFPgRKFljGrT&_nc_ohc=45OioBjGoVUQ7kNvwFq-jah&_nc_oc=AdmykOQZmGJbARqkvFjAF7ptd1gI5X6jRMlbCCE8mLARj2D6Z7vTLpfFCVeen8zAQhcjTVGQtnfv8MzwHd3cMIIc&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&oh=03_Q7cD2gFVQWUjcQ_vsKRsGO9x7_0Y-ggI6v8Q248_njfuCIF7IQ&oe=687267BD') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+        .sidebar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 150px;
+            background: rgba(255, 182, 193, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .sidebar h1 {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'Holtwood One SC', sans-serif;
+            font-size: 40px;
+            font-weight: normal;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            width: 400px;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-family: 'Holtwood One SC', sans-serif;
+            font-size: 24px;
+            font-weight: normal;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 245, 245, 0.8);
+            font-family: 'Holtwood One SC', sans-serif;
+            font-size: 16px;
+        }
+        .login-container .options {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Holtwood One SC', sans-serif;
+            font-size: 14px;
+            margin: 10px 0;
+            align-items: center;
+        }
+        .login-container .options label {
+            display: flex;
+            align-items: center;
+        }
+        .login-container .options input[type="checkbox"] {
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .login-container .options a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background: #4a2c2a;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-family: 'Holtwood One SC', sans-serif;
+            font-size: 16px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        .login-container button:hover {
+            background: #3d2422;
+        }
+        .message {
+            margin-top: 10px;
+            color: #ff0000;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>CARLY</h1>
+    </div>
+    <div class="login-container">
+        <h2>SIGN IN</h2>
+        <form id="loginForm" onsubmit="checkLogin(event)">
+            <input type="text" id="username" placeholder="Account Name" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <div class="options">
+                <label><input type="checkbox"> Remember Me</label>
+                <a href="#">Forgot Password</a>
+            </div>
+            <button type="submit">LOGIN</button>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        function checkLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+
+            // Dữ liệu tĩnh để kiểm tra
+            const validUsername = "carlyuser";
+            const validPassword = "carly123";
+
+            if (username === validUsername && password === validPassword) {
+                window.location.href = "dashboard.html"; // Chuyển đến trang chủ
+            } else {
+                message.textContent = "Tên tài khoản hoặc mật khẩu không đúng!";
+            }
+        }
+    </script>
+</body>
+</html>
