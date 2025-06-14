@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn Xe Từ Kho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            background-color: #633d38;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #d3d3d3;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #4a2c2a;
+        }
+        .header .dropdown {
+            position: relative;
+        }
+        .header .dropdown a {
+            color: #4a2c2a;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .header .dropdown a i {
+            margin-left: 5px;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filters select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+            <li onclick="window.location.href='Dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li>TẠO VÀ LẬP BÁO GIÁ</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li>QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1>CHỌN XE TỪ KHO</h1>
+            <div class="dropdown">
+                <a href="#">QUẢN LÝ SHOWROOM <i class="fas fa-caret-down"></i></a>
+            </div>
+        </div>
+        <div class="filters">
+            <select>
+                <option value="">Mã xe</option>
+                <option value="1122334">1122334</option>
+                <option value="2233445">2233445</option>
+                <option value="3344556">3344556</option>
+                <option value="4455667">4455667</option>
+                <option value="5566778">5566778</option>
+                <option value="0123456">0123456</option>
+            </select>
+            <select>
+                <option value="">Mẫu xe</option>
+                <option value="Kia Morning">Kia Morning</option>
+                <option value="Kia Forte Hatchback">Kia Forte Hatchback</option>
+                <option value="Kia Optimal Sedan">Kia Optimal Sedan</option>
+                <option value="Kia Rondo">Kia Rondo</option>
+                <option value="Kia Hybrid Sedan">Kia Hybrid Sedan</option>
+                <option value="Toyota Sorento">Toyota Sorento</option>
+            </select>
+            <select>
+                <option value="">Hãng xe</option>
+                <option value="Kia">Kia</option>
+                <option value="Toyota">Toyota</option>
+            </select>
+            <select>
+                <option value="">Năm</option>
+                <option value="2025">2025</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã xe</th>
+                    <th>Tên mẫu</th>
+                    <th>Hãng</th>
+                    <th>Năm</th>
+                    <th>Màu</th>
+                    <th>Giá niêm yết</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1122334</td>
+                    <td>Kia Morning</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Trắng</td>
+                    <td>400000000</td>
+                    <td>Còn hàng</td>
+                </tr>
+                <tr>
+                    <td>2233445</td>
+                    <td>Kia Forte Hatchback</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Trắng</td>
+                    <td>600000000</td>
+                    <td>Còn hàng</td>
+                </tr>
+                <tr>
+                    <td>3344556</td>
+                    <td>Kia Optimal Sedan</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Trắng</td>
+                    <td>800000000</td>
+                    <td>Còn hàng</td>
+                </tr>
+                <tr>
+                    <td>4455667</td>
+                    <td>Kia Rondo</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Xám</td>
+                    <td>900000000</td>
+                    <td>Còn hàng</td>
+                </tr>
+                <tr>
+                    <td>5566778</td>
+                    <td>Kia Hybrid Sedan</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Xanh</td>
+                    <td>1000000000</td>
+                    <td>Còn hàng</td>
+                </tr>
+                <tr>
+                    <td>0123456</td>
+                    <td>Toyota Sorento</td>
+                    <td>Toyota</td>
+                    <td>2025</td>
+                    <td>Đỏ</td>
+                    <td>1100000000</td>
+                    <td>Còn hàng</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

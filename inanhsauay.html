@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo và Lập Báo Giá</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            background-color: #633d38;
+        }
+        .sidebar ul li.active {
+            background-color: #8b5e57;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #d3d3d3;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #4a2c2a;
+        }
+        .header .dropdown {
+            position: relative;
+        }
+        .header .dropdown a {
+            color: #4a2c2a;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .header .dropdown a i {
+            margin-left: 5px;
+        }
+        .form-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-grid label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-grid input[type="text"],
+        .form-grid input[type="date"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .car-info {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .car-info .detail-box {
+            flex: 1;
+            background-color: #fff;
+            padding: 15px;
+            border: 2px solid #73605B;
+            border-radius: 5px;
+            position: relative;
+        }
+        .car-info .detail-box h3 {
+            color: #73605B;
+            margin-bottom: 15px;
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+        .car-info .detail-box p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .car-info .detail-box p span {
+            color: #73605B;
+            font-weight: bold;
+        }
+        .car-info .detail-box:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 50px solid #D9D9D9;
+            border-left: 50px solid transparent;
+            z-index: 1;
+        }
+        .car-images {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .car-images .image-section {
+            flex: 1;
+            text-align: center;
+            border: 2px solid #73605B;
+            padding: 10px;
+            box-sizing: border-box;
+            width: 32%;
+        }
+        .car-images .image-section h4 {
+            margin: 0 0 10px;
+            color: #FFFFFF;
+            background-color: #8b5e57;
+            padding: 5px;
+        }
+        .car-images .image-section img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background-color: #fff;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+        }
+        .buttons button:hover {
+            background-color: #633d38;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+            <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li class="active">TẠO VÀ LẬP BÁO GIÁ</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li>QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1>LẬP HỢP ĐỒNG</h1>
+            <div class="dropdown">
+                <a href="#">QUẢN LÝ SHOWROOM <i class="fas fa-caret-down"></i></a>
+            </div>
+        </div>
+        <div class="form-section">
+            <div class="form-grid">
+                <div>
+                    <label>Số báo giá</label>
+                    <input type="text" id="soBaoGia" placeholder="Số báo giá">
+                    <label>Ngày lập</label>
+                    <input type="date" id="ngayLap" value="2025-06-13">
+                    <label>Mã xe</label>
+                    <input type="text" id="maXe" placeholder="Nhập mã xe" oninput="loadCarDetails(this.value)">
+                    <label>Mẫu xe</label>
+                    <input type="text" id="mauXe" placeholder="Mẫu xe" readonly>
+                    <label>Hãng xe</label>
+                    <input type="text" id="hangXe" placeholder="Hãng xe" readonly>
+                    <label>Biến số xe</label>
+                    <input type="text" id="bienSoXe" placeholder="Biến số xe" readonly>
+                    <label>Màu xe</label>
+                    <input type="text" id="mauXeColor" placeholder="Màu xe" readonly>
+                </div>
+                <div>
+                    <label>Quê quán</label>
+                    <input type="text" id="queQuan" placeholder="Quê quán">
+                    <label>Ngày sinh</label>
+                    <input type="date" id="ngaySinh" value="1990-01-01">
+                    <label>Số CMND/CCCD</label>
+                    <input type="text" id="cmnd" placeholder="Số CMND/CCCD">
+                    <label>Mã số thuế</label>
+                    <input type="text" id="maSoThue" placeholder="Mã số thuế">
+                    <label>SĐT</label>
+                    <input type="text" id="sdt" placeholder="Số điện thoại">
+                </div>
+            </div>
+            <div class="car-info" id="carInfo" style="display: none;">
+                <div class="detail-box">
+                    <h3>THÔNG TIN CHI TIẾT</h3>
+                    <p>Mã xe <span id="detailMaXe"></span></p>
+                    <p>Mẫu xe <span id="detailMauXe"></span></p>
+                    <p>Hãng xe <span id="detailHangXe"></span></p>
+                    <p>Biến số xe <span id="detailBienSoXe"></span></p>
+                    <p>Màu xe <span id="detailMauXeColor"></span></p>
+                    <p>Ngày nhập kho <span id="detailNgayNhapKho"></span></p>
+                    <p>Ngày xuất kho <span id="detailNgayXuatKho"></span></p>
+                    <p>Tình trạng <span id="detailTinhTrang"></span></p>
+                </div>
+                <div class="detail-box">
+                    <h3>THÔNG SỐ KỸ THUẬT</h3>
+                    <p>Loại động cơ <span id="detailLoaiDongCo"></span></p>
+                    <p>Dung tích động cơ <span id="detailDungTichDongCo"></span></p>
+                    <p>Hộp số <span id="detailHopSo"></span></p>
+                    <p>Hệ động cơ <span id="detailHeDongCo"></span></p>
+                    <p>Mức tiêu thụ nhiên liệu <span id="detailMucTieuThuNhienLieu"></span></p>
+                    <p>Kích thước xe <span id="detailKichThuocXe"></span></p>
+                    <p>Số chỗ <span id="detailSoCho"></span></p>
+                </div>
+            </div>
+            <div class="car-images" id="carImages" style="display: none;">
+                <div class="image-section">
+                    <h4>TRÁI</h4>
+                    <img id="imgTrai" src="" alt="Xe Trái">
+                </div>
+                <div class="image-section">
+                    <h4>SAU</h4>
+                    <img id="imgSau" src="" alt="Xe Sau">
+                </div>
+                <div class="image-section">
+                    <h4>PHÁI</h4>
+                    <img id="imgPhai" src="" alt="Xe Phải">
+                </div>
+            </div>
+            <div class="buttons">
+                <button onclick="clearForm()">XEM TRƯỚC</button>
+                <button onclick="generateBaoGia()">TẠO BÁO GIÁ</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const carData = {
+            '1122334': {
+                mauXe: 'Kia Morning',
+                hangXe: 'Kia',
+                bienSoXe: '36A-789-01',
+                mauXeColor: 'Trắng',
+                ngayNhapKho: '20-04-2025',
+                ngayXuatKho: '20-05-2025',
+                tinhTrang: 'Mới',
+                loaiDongCo: 'Xăng',
+                dungTichDongCo: '1.2L',
+                hopSo: 'Tự động (4 cấp)',
+                heDongCo: 'FWD',
+                mucTieuThuNhienLieu: '5.5l/100K',
+                kichThuocXe: '3595x1595x1490',
+                soCho: '5 Chỗ',
+                imgTrai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/morning-2023/2023-kia-morning-trai.jpg',
+                imgSau: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/morning-2023/2023-kia-morning-sau.jpg',
+                imgPhai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/morning-2023/2023-kia-morning-phai.jpg'
+            },
+            '2233445': {
+                mauXe: 'Kia Forte Hatchback',
+                hangXe: 'Kia',
+                bienSoXe: '43A-901-23',
+                mauXeColor: 'Trắng',
+                ngayNhapKho: '05-05-2025',
+                ngayXuatKho: '05-06-2025',
+                tinhTrang: 'Mới',
+                loaiDongCo: 'Xăng',
+                dungTichDongCo: '2.0L',
+                hopSo: 'Tự động (6 cấp)',
+                heDongCo: 'FWD',
+                mucTieuThuNhienLieu: '6l/100K',
+                kichThuocXe: '4320x1800x1450',
+                soCho: '5 Chỗ',
+                imgTrai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/forte-hatchback-2023/2023-kia-forte-hatchback-trai.jpg',
+                imgSau: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/forte-hatchback-2023/2023-kia-forte-hatchback-sau.jpg',
+                imgPhai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/forte-hatchback-2023/2023-kia-forte-hatchback-phai.jpg'
+            },
+            '3344556': {
+                mauXe: 'Kia Optimal Sedan',
+                hangXe: 'Kia',
+                bienSoXe: '50A-234-56',
+                mauXeColor: 'Trắng',
+                ngayNhapKho: '25-04-2025',
+                ngayXuatKho: '25-05-2025',
+                tinhTrang: 'Mới',
+                loaiDongCo: 'Xăng',
+                dungTichDongCo: '2.4L',
+                hopSo: 'Tự động (6 cấp)',
+                heDongCo: 'FWD',
+                mucTieuThuNhienLieu: '6.2l/100K',
+                kichThuocXe: '4855x1860x1455',
+                soCho: '5 Chỗ',
+                imgTrai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/optima-sedan-2023/2023-kia-optima-sedan-trai.jpg',
+                imgSau: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/optima-sedan-2023/2023-kia-optima-sedan-sau.jpg',
+                imgPhai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/optima-sedan-2023/2023-kia-optima-sedan-phai.jpg'
+            },
+            '4455667': {
+                mauXe: 'Kia Rondo',
+                hangXe: 'Kia',
+                bienSoXe: '47A-345-67',
+                mauXeColor: 'Xám',
+                ngayNhapKho: '15-05-2025',
+                ngayXuatKho: '15-06-2025',
+                tinhTrang: 'Mới',
+                loaiDongCo: 'Xăng',
+                dungTichDongCo: '2.0L',
+                hopSo: 'Tự động (6 cấp)',
+                heDongCo: 'FWD',
+                mucTieuThuNhienLieu: '6.8l/100K',
+                kichThuocXe: '4525x1805x1610',
+                soCho: '7 Chỗ',
+                imgTrai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/rondo-2023/2023-kia-rondo-trai.jpg',
+                imgSau: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/rondo-2023/2023-kia-rondo-sau.jpg',
+                imgPhai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/rondo-2023/2023-kia-rondo-phai.jpg'
+            },
+            '5566778': {
+                mauXe: 'Kia Hybrid Sedan',
+                hangXe: 'Kia',
+                bienSoXe: '51A-678-90',
+                mauXeColor: 'Xanh',
+                ngayNhapKho: '12-05-2025',
+                ngayXuatKho: '12-06-2025',
+                tinhTrang: 'Mới',
+                loaiDongCo: 'Hybrid',
+                dungTichDongCo: '1.6L',
+                hopSo: 'Tự động (7 cấp DCT)',
+                heDongCo: 'FWD',
+                mucTieuThuNhienLieu: '4.5l/100K',
+                kichThuocXe: '4660x1800x1450',
+                soCho: '5 Chỗ',
+                imgTrai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/hybrid-sedan-2023/2023-kia-hybrid-sedan-trai.jpg',
+                imgSau: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/hybrid-sedan-2023/2023-kia-hybrid-sedan-sau.jpg',
+                imgPhai: 'https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/hybrid-sedan-2023/2023-kia-hybrid-sedan-phai.jpg'
+            },
+            '0123456': {
+                mauXe: 'Toyota Sorento',
+                hangXe: 'Toyota',
+                bienSoXe: '30A-185-34',
+                mauXeColor: 'Đỏ',
+                ngayNhapKho: '30-04-2025',
+                ngayXuatKho: '05-06-2025',
+                tinhTrang: 'Mới',
+                loaiDongCo: 'Xăng',
+                dungTichDongCo: '2.0L',
+                hopSo: 'Tự động (6 cấp)',
+                heDongCo: 'AWD',
+                mucTieuThuNhienLieu: '7.5l/100K',
+                kichThuocXe: '4800x1900x1685',
+                soCho: '7 Chỗ',
+                imgTrai: 'https://www.toyota.com.vn/resources/images/sorento-2023-trai.jpg',
+                imgSau: 'https://www.toyota.com.vn/resources/images/sorento-2023-sau.jpg',
+                imgPhai: 'https://www.toyota.com.vn/resources/images/sorento-2023-phai.jpg'
+            }
+        };
+
+        function loadCarDetails(maXe) {
+            const info = carData[maXe];
+            const carInfo = document.getElementById('carInfo');
+            const carImages = document.getElementById('carImages');
+
+            if (info) {
+                document.getElementById('mauXe').value = info.mauXe;
+                document.getElementById('hangXe').value = info.hangXe;
+                document.getElementById('bienSoXe').value = info.bienSoXe;
+                document.getElementById('mauXeColor').value = info.mauXeColor;
+
+                document.getElementById('detailMaXe').textContent = maXe;
+                document.getElementById('detailMauXe').textContent = info.mauXe;
+                document.getElementById('detailHangXe').textContent = info.hangXe;
+                document.getElementById('detailBienSoXe').textContent = info.bienSoXe;
+                document.getElementById('detailMauXeColor').textContent = info.mauXeColor;
+                document.getElementById('detailNgayNhapKho').textContent = info.ngayNhapKho;
+                document.getElementById('detailNgayXuatKho').textContent = info.ngayXuatKho;
+                document.getElementById('detailTinhTrang').textContent = info.tinhTrang;
+                document.getElementById('detailLoaiDongCo').textContent = info.loaiDongCo;
+                document.getElementById('detailDungTichDongCo').textContent = info.dungTichDongCo;
+                document.getElementById('detailHopSo').textContent = info.hopSo;
+                document.getElementById('detailHeDongCo').textContent = info.heDongCo;
+                document.getElementById('detailMucTieuThuNhienLieu').textContent = info.mucTieuThuNhienLieu;
+                document.getElementById('detailKichThuocXe').textContent = info.kichThuocXe;
+                document.getElementById('detailSoCho').textContent = info.soCho;
+
+                document.getElementById('imgTrai').src = info.imgTrai;
+                document.getElementById('imgSau').src = info.imgSau;
+                document.getElementById('imgPhai').src = info.imgPhai;
+
+                carInfo.style.display = 'flex';
+                carImages.style.display = 'flex';
+            } else {
+                carInfo.style.display = 'none';
+                carImages.style.display = 'none';
+                document.getElementById('mauXe').value = '';
+                document.getElementById('hangXe').value = '';
+                document.getElementById('bienSoXe').value = '';
+                document.getElementById('mauXeColor').value = '';
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('soBaoGia').value = '';
+            document.getElementById('ngayLap').value = '2025-06-13';
+            document.getElementById('maXe').value = '';
+            document.getElementById('mauXe').value = '';
+            document.getElementById('hangXe').value = '';
+            document.getElementById('bienSoXe').value = '';
+            document.getElementById('mauXeColor').value = '';
+            document.getElementById('queQuan').value = '';
+            document.getElementById('ngaySinh').value = '1990-01-01';
+            document.getElementById('cmnd').value = '';
+            document.getElementById('maSoThue').value = '';
+            document.getElementById('sdt').value = '';
+            document.getElementById('carInfo').style.display = 'none';
+            document.getElementById('carImages').style.display = 'none';
+        }
+
+        function generateBaoGia() {
+            alert('Báo giá đã được tạo! (Chức năng này cần tích hợp thêm backend)');
+        }
+    </script>
+</body>
+</html>
