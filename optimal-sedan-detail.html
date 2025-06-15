@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Xe - Kia Optimal Sedan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #73605B;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            background-color: #633d38;
+        }
+        .sidebar ul li.active {
+            background-color: #8b5e57;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .car-detail {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .car-images {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .car-images .image-section {
+            flex: 1;
+            text-align: center;
+            border: 2px solid #73605B;
+            padding: 10px;
+            box-sizing: border-box;
+            width: 32%;
+        }
+        .car-images .image-section h4 {
+            margin: 0 0 10px;
+            color: #FFFFFF;
+            background-color: #8b5e57;
+            padding: 5px;
+        }
+        .car-images .image-section img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .info-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .info-block {
+            flex: 1;
+            background-color: #FFFFFF;
+            padding: 15px;
+            border: 2px solid #73605B;
+            position: relative;
+            font-size: 16px;
+        }
+        .info-block h3 {
+            color: #73605B;
+            margin-bottom: 15px;
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+        .info-block p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .info-block p span {
+            color: #73605B;
+            font-weight: bold;
+        }
+        .info-block:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 50px solid #D9D9D9;
+            border-left: 50px solid transparent;
+            z-index: 1;
+        }
+        .edit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #8b5e57;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+        }
+        .edit-button:hover {
+            background-color: #633d38;
+        }
+        .editable {
+            padding: 5px;
+            width: 200px;
+            display: inline-block;
+        }
+        .editable[contenteditable="true"] {
+            border: 1px solid #73605B;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+        }
+        .date-picker {
+            border: none;
+            padding: 5px;
+            width: 200px;
+            display: inline-block;
+        }
+        .date-picker[style*="display: inline"] {
+            border: 1px solid #73605B;
+            border-radius: 3px;
+        }
+        .hidden {
+            display: none;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #8b5e57;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background-color: #633d38;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+            <li class="active">QUẢN LÝ THÔNG TIN XE</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li>TẠO VÀ LẬP BÁO GIÁ</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li>QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="car-detail">
+            <div class="car-images">
+                <div class="image-section">
+                    <h4>TRÁI</h4>
+                    <img src="https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/optima-sedan-2023/2023-kia-optima-sedan-trai.jpg" alt="Optimal Sedan Trái">
+                </div>
+                <div class="image-section">
+                    <h4>SAU</h4>
+                    <img src="https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/optima-sedan-2023/2023-kia-optima-sedan-sau.jpg" alt="Optimal Sedan Sau">
+                </div>
+                <div class="image-section">
+                    <h4>PHÁI</h4>
+                    <img src="https://www.kia.com/content/dam/kwcms/kme/vn/vi/content/vehicles/optima-sedan-2023/2023-kia-optima-sedan-phai.jpg" alt="Optimal Sedan Phải">
+                </div>
+            </div>
+            <div class="info-container">
+                <div class="info-block">
+                    <h3>THÔNG TIN CHI TIẾT</h3>
+                    <p>Mã Xe <span class="editable" contenteditable="false" data-field="maXe">3344556</span></p>
+                    <p>Mẫu Xe <span class="editable" contenteditable="false" data-field="mauXe">Kia Optimal Sedan</span></p>
+                    <p>Hãng Xe <span class="editable" contenteditable="false" data-field="hangXe">Kia</span></p>
+                    <p>Biến Số Xe <span class="editable" contenteditable="false" data-field="bienSoXe">50A-234-56</span></p>
+                    <p>Màu Xe <span class="editable" contenteditable="false" data-field="mauXe">Trắng</span></p>
+                    <p>Ngày Nhập Kho <span><input type="date" class="date-picker hidden" data-field="ngayNhapKho" value="2025-04-25"><span class="editable" contenteditable="false" data-field="ngayNhapKho">25-04-2025</span></span></p>
+                    <p>Ngày Xuất Kho <span><input type="date" class="date-picker hidden" data-field="ngayXuatKho" value="2025-05-25"><span class="editable" contenteditable="false" data-field="ngayXuatKho">25-05-2025</span></span></p>
+                    <p>Tình Trạng <span class="editable" contenteditable="false" data-field="tinhTrang">Mới</span></p>
+                </div>
+                <div class="info-block">
+                    <h3>THÔNG SỐ KỸ THUẬT</h3>
+                    <p>Loại Động Cơ <span class="editable" contenteditable="false" data-field="loaiDongCo">Xăng</span></p>
+                    <p>Dung Tích Động Cơ <span class="editable" contenteditable="false" data-field="dungTichDongCo">2.4L</span></p>
+                    <p>Hộp Số <span class="editable" contenteditable="false" data-field="hopSo">Tự động (6 cấp)</span></p>
+                    <p>Hệ Động Cơ <span class="editable" contenteditable="false" data-field="heDongCo">FWD</span></p>
+                    <p>Mức Tiêu Thụ Nhiên Liệu <span class="editable" contenteditable="false" data-field="mucTieuThuNhienLieu">6.2l/100K</span></p>
+                    <p>Kích Thước Xe <span class="editable" contenteditable="false" data-field="kichThuocXe">4855x1860x1455</span></p>
+                    <p>Số Chỗ <span class="editable" contenteditable="false" data-field="soCho">5 Chỗ</span></p>
+                </div>
+            </div>
+            <button class="edit-button" onclick="toggleEditMode()">Chỉnh sửa</button>
+            <a href="dashboard.html" class="back-button">Quay Lại</a>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedData = JSON.parse(localStorage.getItem('carData')) || {};
+            const editables = document.querySelectorAll('.editable');
+            const datePickers = document.querySelectorAll('.date-picker');
+
+            editables.forEach(editable => {
+                const field = editable.getAttribute('data-field');
+                if (savedData[field]) {
+                    editable.textContent = savedData[field];
+                }
+            });
+            datePickers.forEach(picker => {
+                const field = picker.getAttribute('data-field');
+                if (savedData[field]) {
+                    picker.value = savedData[field].split('-').reverse().join('-');
+                    picker.nextElementSibling.textContent = savedData[field];
+                }
+            });
+        });
+
+        function toggleEditMode() {
+            const editables = document.querySelectorAll('.editable');
+            const datePickers = document.querySelectorAll('.date-picker');
+            const editButton = document.querySelector('.edit-button');
+
+            const isEditing = editButton.textContent === 'Lưu';
+            if (isEditing) {
+                const carData = {};
+                editables.forEach(editable => {
+                    const field = editable.getAttribute('data-field');
+                    carData[field] = editable.textContent.trim();
+                    editable.contentEditable = 'false';
+                });
+                datePickers.forEach(picker => {
+                    const field = picker.getAttribute('data-field');
+                    carData[field] = picker.value.split('-').reverse().join('-');
+                    const span = picker.nextElementSibling;
+                    span.textContent = picker.value.split('-').reverse().join('-');
+                    picker.classList.add('hidden');
+                });
+                localStorage.setItem('carData', JSON.stringify(carData));
+                editButton.textContent = 'Chỉnh sửa';
+            } else {
+                editables.forEach(editable => {
+                    editable.contentEditable = 'true';
+                });
+                datePickers.forEach(picker => {
+                    picker.classList.remove('hidden');
+                });
+                editButton.textContent = 'Lưu';
+            }
+        }
+    </script>
+</body>
+</html>

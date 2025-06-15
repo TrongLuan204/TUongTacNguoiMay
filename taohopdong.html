@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hợp Đồng Xe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            background-color: #633d38;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 36px;
+            color: #6b4e46;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 2px solid #8b5e57;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .section {
+            flex: 1;
+            padding: 10px;
+            background-color: #fff;
+            min-width: 0;
+        }
+        .section-header {
+            background-color: #8b5e57;
+            color: #fff;
+            padding: 5px 10px;
+            margin: -10px -10px 10px -10px;
+        }
+        .section-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .section-row span {
+            color: #73605B;
+            font-weight: bold;
+            padding: 0 5px;
+        }
+        .editable {
+            contenteditable: true;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+        .package-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .package-row .remove-btn {
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 2px 5px;
+            cursor: pointer;
+        }
+        .package-row .remove-btn:hover {
+            background-color: #704b46;
+        }
+        .total-row {
+            font-weight: bold;
+            border-top: 1px solid #ccc;
+            padding-top: 5px;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+        }
+        .buttons .email-btn {
+            background-color: #a9a9a9;
+            color: #fff;
+        }
+        .buttons .pdf-email-btn {
+            background-color: #a9a9a9;
+            color: #fff;
+        }
+        .buttons .close-btn {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .notes {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+            <li class="active">QUẢN LÝ THÔNG TIN XE</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li>TẠO VÀ LẬP BÁO GIÁ</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li>QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1>TẠO LẬP HỢP ĐỒNG</h1>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="section">
+                    <div class="section-header">THÔNG HỢP ĐỒNG</div>
+                    <div class="section-row">
+                        <span>ID hợp đồng</span>
+                        <span class="editable" id="contract-id">21-06-2025</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Địa chỉ</span>
+                        <span class="editable" id="contract-address"></span>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="section-header">THÔNG TIN CHỨNG</div>
+                    <div class="section-row">
+                        <span>Thời gian lập hợp đồng</span>
+                        <span class="editable" id="contract-time">21-06-2025</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Địa điểm</span>
+                        <span class="editable" id="contract-location">Showroom Carly, số 19, Nguyễn Trãi, Ba Đình, Hà Nội</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="section">
+                    <div class="section-header">BÊN A</div>
+                    <div class="section-row">
+                        <span>Họ và tên</span>
+                        <span class="editable" id="party-a-name">Nguyễn Hoàng Anh</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Ngày sinh</span>
+                        <span class="editable" id="party-a-dob">02-09-2004</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Căn cước</span>
+                        <span class="editable" id="party-a-id">0012041234</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Ngày cấp</span>
+                        <span class="editable" id="party-a-issue-date">21-04-2021</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Nơi cấp</span>
+                        <span class="editable" id="party-a-issue-place">Cục Cảnh sát Quản lý Hành chính, Hà Nội</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Email</span>
+                        <span class="editable" id="party-a-email">HoaAnh43@gmail.com</span>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="section-header">BÊN B</div>
+                    <div class="section-row">
+                        <span>Họ và tên</span>
+                        <span class="editable" id="party-b-name">Nguyễn Đình Hiếu</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Ngày sinh</span>
+                        <span class="editable" id="party-b-dob">04-08-2004</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Căn cước</span>
+                        <span class="editable" id="party-b-id">0012041234</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Ngày cấp</span>
+                        <span class="editable" id="party-b-issue-date">21-04-2021</span>
+                    </div>
+                    <div class="section-row">
+                        <span>Nơi cấp</span>
+                        <span class="editable" id="party-b-issue-place">Cục Cảnh sát Quản lý Hành chính, Hà Nội</span>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">THÔNG TIN XE</div>
+                <div class="section-row">
+                    <span>Mã xe</span>
+                    <span class="editable" id="car-code"></span>
+                </div>
+                <div class="section-row">
+                    <span>Mẫu xe</span>
+                    <span class="editable" id="car-model"></span>
+                </div>
+                <div class="section-row">
+                    <span>Hãng xe</span>
+                    <span class="editable" id="car-brand"></span>
+                </div>
+                <div class="section-row">
+                    <span>Màu xe</span>
+                    <span class="editable" id="car-color"></span>
+                </div>
+                <div class="section-row">
+                    <span>Biến số</span>
+                    <span class="editable" id="car-license"></span>
+                </div>
+                <div class="section-row">
+                    <span>Số đăng ký xe</span>
+                    <span class="editable" id="car-registration">51A-123-45</span>
+                </div>
+                <div class="section-row">
+                    <span>Nơi cấp đăng ký xe</span>
+                    <span class="editable" id="car-registration-place">CỤC QUẢN LÝ PHƯƠNG TIỆN</span>
+                </div>
+                <div class="section-row">
+                    <span>Ngày đăng ký lần đầu</span>
+                    <span class="editable" id="car-registration-date">15-05-2021</span>
+                </div>
+                <div class="section-row">
+                    <span>Ngày nhập kho</span>
+                    <span class="editable" id="car-entry-date"></span>
+                </div>
+                <div class="section-row">
+                    <span>Ngày xuất kho</span>
+                    <span class="editable" id="car-exit-date"></span>
+                </div>
+                <div class="section-row">
+                    <span>Tình trạng</span>
+                    <span class="editable" id="car-status"></span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">THÔNG TIN ĐƠN HÀNG</div>
+                <div class="package-row" data-index="0">
+                    <span>Gói thảm cao cấp</span>
+                    <span class="editable" contenteditable="true" data-field="package-price">20.000.000 đ</span>
+                    <button class="remove-btn">Xóa</button>
+                </div>
+                <div class="package-row" data-index="1">
+                    <span>Gói bảo da cao cấp</span>
+                    <span class="editable" contenteditable="true" data-field="package-price">20.000.000 đ</span>
+                    <button class="remove-btn">Xóa</button>
+                </div>
+                <div class="package-row" data-index="2">
+                    <span>Gói âm thanh Bose</span>
+                    <span class="editable" contenteditable="true" data-field="package-price">20.000.000 đ</span>
+                    <button class="remove-btn">Xóa</button>
+                </div>
+                <div class="package-row" data-index="3">
+                    <span>Gói bảo vệ thân vỏ</span>
+                    <span class="editable" contenteditable="true" data-field="package-price">20.000.000 đ</span>
+                    <button class="remove-btn">Xóa</button>
+                </div>
+                <div class="section-row total-row">
+                    <span>Tổng giá phụ kiện</span>
+                    <span id="total-accessories">80.000.000 đ</span>
+                </div>
+                <div class="section-row total-row">
+                    <span>Giá xe</span>
+                    <span id="car-price"></span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">CHIẾT KHẤU</div>
+                <div class="section-row">
+                    <span>Giá xe</span>
+                    <span class="editable" id="base-price"></span>
+                </div>
+                <div class="section-row">
+                    <span>Giá phụ kiện</span>
+                    <span class="editable" id="accessories-price"></span>
+                </div>
+                <div class="section-row">
+                    <span>Chiết khấu</span>
+                    <span class="editable" id="discount">0 đ</span>
+                </div>
+                <div class="section-row">
+                    <span>Thuế VAT (10% trên tổng doanh thu)</span>
+                    <span id="vat"></span>
+                </div>
+                <div class="section-row">
+                    <span>Phí đăng ký, phí trước bạ (Ước tính)</span>
+                    <span class="editable" id="registration-fee">80.000.000 đ</span>
+                </div>
+                <div class="section-row total-row">
+                    <span>Tổng thanh toán</span>
+                    <span id="total-payment"></span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">ĐIỀU KHOẢN VÀ GHI CHÚ</div>
+                <div class="section-row">
+                    <span>Điều kiện giao xe</span>
+                    <span class="editable" id="delivery-condition">Đu kiện trong vòng 7 ngày từ khi ký hợp đồng</span>
+                </div>
+                <div class="section-row">
+                    <span>Thời hạn hiệu lực báo giá</span>
+                    <span class="editable" id="quote-validity">Đến ngày 16/2025</span>
+                </div>
+            </div>
+            <div class="section">
+                <label for="notes">Nhập ghi chú</label>
+                <textarea id="notes" class="notes" placeholder="Nhập ghi chú"></textarea>
+            </div>
+            <div class="buttons">
+                <button class="email-btn">Gửi EMAIL</button>
+                <button class="pdf-email-btn">Xuất PDF và gửi EMAIL</button>
+                <button class="close-btn">Đóng</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lấy thông tin xe từ localStorage (giả định từ giao diện chính)
+            const selectedCar = JSON.parse(localStorage.getItem('selectedCar')) || {
+                code: '1122334',
+                model: 'Kia Morning',
+                brand: 'Kia',
+                color: 'Trắng',
+                license: '36A-789-01',
+                registration: '51A-123-45',
+                registrationPlace: 'CỤC QUẢN LÝ PHƯƠNG TIỆN',
+                registrationDate: '15-05-2021',
+                entryDate: '20-04-2025',
+                exitDate: '20-05-2025',
+                status: 'Mới',
+                price: '350000000'
+            };
+
+            // Cập nhật thông tin xe
+            document.getElementById('car-code').textContent = selectedCar.code;
+            document.getElementById('car-model').textContent = selectedCar.model;
+            document.getElementById('car-brand').textContent = selectedCar.brand;
+            document.getElementById('car-color').textContent = selectedCar.color;
+            document.getElementById('car-license').textContent = selectedCar.license;
+            document.getElementById('car-registration').textContent = selectedCar.registration;
+            document.getElementById('car-registration-place').textContent = selectedCar.registrationPlace;
+            document.getElementById('car-registration-date').textContent = selectedCar.registrationDate;
+            document.getElementById('car-entry-date').textContent = selectedCar.entryDate;
+            document.getElementById('car-exit-date').textContent = selectedCar.exitDate;
+            document.getElementById('car-status').textContent = selectedCar.status;
+            document.getElementById('car-price').textContent = `${selectedCar.price} đ`;
+            document.getElementById('base-price').textContent = `${selectedCar.price} đ`;
+
+            // Tính toán giá phụ kiện và tổng thanh toán
+            function updateTotals() {
+                const packages = document.querySelectorAll('.package-row');
+                let totalAccessories = 0;
+                packages.forEach(pkg => {
+                    const price = parseFloat(pkg.querySelector('.editable').textContent.replace(/[^0-9]/g, '')) || 0;
+                    totalAccessories += price;
+                });
+                document.getElementById('total-accessories').textContent = `${totalAccessories.toLocaleString()} đ`;
+                document.getElementById('accessories-price').textContent = `${totalAccessories.toLocaleString()} đ`;
+
+                const basePrice = parseFloat(selectedCar.price.replace(/[^0-9]/g, '')) || 0;
+                const discount = parseFloat(document.getElementById('discount').textContent.replace(/[^0-9]/g, '')) || 0;
+                const registrationFee = parseFloat(document.getElementById('registration-fee').textContent.replace(/[^0-9]/g, '')) || 0;
+                const subtotal = basePrice + totalAccessories - discount;
+                const vat = subtotal * 0.1;
+                const totalPayment = subtotal + vat + registrationFee;
+
+                document.getElementById('vat').textContent = `${vat.toLocaleString()} đ`;
+                document.getElementById('total-payment').textContent = `${totalPayment.toLocaleString()} đ`;
+            }
+
+            // Xử lý xóa gói bổ sung
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btn.parentElement.remove();
+                    updateTotals();
+                });
+            });
+
+            // Cập nhật tổng khi chỉnh sửa giá gói
+            document.querySelectorAll('.editable[data-field="package-price"]').forEach(el => {
+                el.addEventListener('input', updateTotals);
+            });
+
+            // Cập nhật tổng khi chỉnh sửa chiết khấu hoặc phí đăng ký
+            document.getElementById('discount').addEventListener('input', updateTotals);
+            document.getElementById('registration-fee').addEventListener('input', updateTotals);
+
+            // Khởi tạo tổng ban đầu
+            updateTotals();
+
+            // Xử lý nút Đóng
+            document.querySelector('.close-btn').addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

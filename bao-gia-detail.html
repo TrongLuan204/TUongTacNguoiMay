@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn Xe Từ Kho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            background-color: #633d38;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #4a2c2a;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filters select {
+            padding: 8px 12px;
+            border: 1px solid #73605B;
+            border-radius: 4px;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+            color: #73605B;
+            background-color: #fff;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2373605B' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        td {
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        .car-detail {
+            display: none;
+            max-width: 1200px;
+            margin: 20px auto;
+            position: relative;
+        }
+        .car-images {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .car-images .image-section {
+            flex: 1;
+            text-align: center;
+            border: 2px solid #73605B;
+            padding: 10px;
+            box-sizing: border-box;
+            width: 32%;
+        }
+        .car-images .image-section h4 {
+            margin: 0 0 10px;
+            color: #FFFFFF;
+            background-color: #8b5e57;
+            padding: 5px;
+        }
+        .car-images .image-section img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .info-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .info-block {
+            flex: 1;
+            background-color: #FFFFFF;
+            padding: 15px;
+            border: 2px solid #73605B;
+            position: relative;
+            font-size: 16px;
+        }
+        .info-block h3 {
+            color: #73605B;
+            margin-bottom: 15px;
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+        .info-block p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .info-block p span {
+            color: #73605B;
+            font-weight: bold;
+        }
+        .info-block:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 50px solid #D9D9D9;
+            border-left: 50px solid transparent;
+            z-index: 1;
+        }
+        .button-container {
+            display: none;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+        }
+        .button-container button:hover {
+            background-color: #704b46;
+        }
+        .hold-info {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #d9d9d9;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .hold-info p {
+            margin: 0;
+            font-size: 18px;
+            color: #4a2c2a;
+        }
+        .hold-info button {
+            padding: 5px 15px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+        }
+        .hold-info button:hover {
+            background-color: #704b46;
+        }
+        .date-picker.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+            <li onclick="window.location.href='Dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li class="active">TẠO VÀ LẬP BÁO GIÁ</li>
+            <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
+            <li onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1>CHỌN XE TỪ KHO</h1>
+        </div>
+        <div class="filters">
+            <select>
+                <option value="">Mẫu xe</option>
+                <option value="Kia Morning">Kia Morning</option>
+                <option value="Kia Optimal Sedan">Kia Optimal Sedan</option>
+                <option value="Kia Rondo">Kia Rondo</option>
+                <option value="Kia Sorento">Kia Sorento</option>
+                <option value="Kia Hybrid Sedan">Kia Hybrid Sedan</option>
+                <option value="Kia Forte Hatchback">Kia Forte Hatchback</option>
+            </select>
+            <select>
+                <option value="">Hãng xe</option>
+                <option value="Kia">Kia</option>
+            </select>
+            <select>
+                <option value="">Năm</option>
+                <option value="2025">2025</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã xe</th>
+                    <th>Tên mẫu</th>
+                    <th>Hãng</th>
+                    <th>Năm</th>
+                    <th>Màu</th>
+                    <th>Giá niêm yết</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-code="1122334" data-model="Kia Morning" data-brand="Kia" data-year="2025" data-color="Trắng" data-price="350000000" data-status="Mới">
+                    <td>1122334</td>
+                    <td>Kia Morning</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Trắng</td>
+                    <td>350000000</td>
+                    <td>Mới</td>
+                </tr>
+                <tr data-code="3344556" data-model="Kia Optimal Sedan" data-brand="Kia" data-year="2025" data-color="Trắng" data-price="650000000" data-status="Mới">
+                    <td>3344556</td>
+                    <td>Kia Optimal Sedan</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Trắng</td>
+                    <td>650000000</td>
+                    <td>Mới</td>
+                </tr>
+                <tr data-code="4455667" data-model="Kia Rondo" data-brand="Kia" data-year="2025" data-color="Xám" data-price="700000000" data-status="Mới">
+                    <td>4455667</td>
+                    <td>Kia Rondo</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Xám</td>
+                    <td>700000000</td>
+                    <td>Mới</td>
+                </tr>
+                <tr data-code="0123456" data-model="Kia Sorento" data-brand="Kia" data-year="2025" data-color="Đỏ" data-price="950000000" data-status="Mới">
+                    <td>0123456</td>
+                    <td>Kia Sorento</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Đỏ</td>
+                    <td>950000000</td>
+                    <td>Mới</td>
+                </tr>
+                <tr data-code="5566778" data-model="Kia Hybrid Sedan" data-brand="Kia" data-year="2025" data-color="Xanh" data-price="800000000" data-status="Mới">
+                    <td>5566778</td>
+                    <td>Kia Hybrid Sedan</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Xanh</td>
+                    <td>800000000</td>
+                    <td>Mới</td>
+                </tr>
+                <tr data-code="2233445" data-model="Kia Forte Hatchback" data-brand="Kia" data-year="2025" data-color="Trắng" data-price="600000000" data-status="Mới">
+                    <td>2233445</td>
+                    <td>Kia Forte Hatchback</td>
+                    <td>Kia</td>
+                    <td>2025</td>
+                    <td>Trắng</td>
+                    <td>600000000</td>
+                    <td>Mới</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="button-container" id="buttonContainer">
+            <button id="additionalOptions">Tùy chọn bổ sung</button>
+            <button id="holdCar">Giữ xe</button>
+        </div>
+        <div class="hold-info" id="holdInfo">
+            <p>Xe đã giữ trong 5 phút</p>
+            <button id="undoHold">Hoàn tác</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rows = document.querySelectorAll('table tbody tr');
+            const content = document.querySelector('.content');
+            const buttonContainer = document.getElementById('buttonContainer');
+            const holdInfo = document.getElementById('holdInfo');
+            const additionalOptionsBtn = document.getElementById('additionalOptions');
+            const holdCarBtn = document.getElementById('holdCar');
+            const undoHoldBtn = document.getElementById('undoHold');
+
+            // Ẩn nút mặc định
+            buttonContainer.style.display = 'none';
+
+            rows.forEach(row => {
+                row.addEventListener('click', () => {
+                    const details = content.querySelectorAll('.car-detail');
+                    const code = row.getAttribute('data-code');
+                    const model = row.getAttribute('data-model');
+                    const brand = row.getAttribute('data-brand');
+                    const year = row.getAttribute('data-year');
+                    const color = row.getAttribute('data-color');
+                    const price = row.getAttribute('data-price');
+                    const status = row.getAttribute('data-status');
+
+                    // Lưu thông tin xe vào localStorage
+                    const carData = {
+                        code: code,
+                        model: model,
+                        brand: brand,
+                        color: color,
+                        license: '', // Có thể lấy từ chi tiết nếu đã điền
+                        registration: '51A-123-45', // Giá trị mặc định
+                        registrationPlace: 'CỤC QUẢN LÝ PHƯƠNG TIỆN',
+                        registrationDate: '15-05-2021', // Giá trị mặc định
+                        entryDate: '', // Sẽ lấy từ chi tiết nếu có
+                        exitDate: '', // Sẽ lấy từ chi tiết nếu có
+                        status: status,
+                        price: price
+                    };
+                    localStorage.setItem('selectedCar', JSON.stringify(carData));
+
+                    // Ẩn tất cả các phần chi tiết
+                    details.forEach(d => d.style.display = 'none');
+
+                    // Tìm hoặc tạo phần chi tiết mới
+                    const currentDetail = Array.from(details).find(d => {
+                        const currentCode = d.querySelector('.car-code');
+                        return currentCode && currentCode.textContent === code;
+                    });
+                    if (currentDetail) {
+                        currentDetail.style.display = 'block';
+                    } else {
+                        const newDetail = document.createElement('div');
+                        newDetail.className = 'car-detail';
+                        newDetail.innerHTML = `
+                            <div class="car-images">
+                                <div class="image-section">
+                                    <h4>TRÁI</h4>
+                                    <img src="" alt="Car Left">
+                                </div>
+                                <div class="image-section">
+                                    <h4>SAU</h4>
+                                    <img src="" alt="Car Rear">
+                                </div>
+                                <div class="image-section">
+                                    <h4>PHÁI</h4>
+                                    <img src="" alt="Car Right">
+                                </div>
+                            </div>
+                            <div class="info-container">
+                                <div class="info-block">
+                                    <h3>THÔNG TIN CHI TIẾT</h3>
+                                    <p>Mã Xe <span class="editable car-code" contenteditable="false" data-field="maXe">${code}</span></p>
+                                    <p>Mẫu Xe <span class="editable car-model" contenteditable="false" data-field="mauXe">${model}</span></p>
+                                    <p>Hãng Xe <span class="editable car-brand" contenteditable="false" data-field="hangXe">${brand}</span></p>
+                                    <p>Biến Số Xe <span class="editable license-plate" contenteditable="false" data-field="bienSoXe"></span></p>
+                                    <p>Màu Xe <span class="editable car-color" contenteditable="false" data-field="mauXe">${color}</span></p>
+                                    <p>Ngày Nhập Kho <span><input type="date" class="date-picker hidden" data-field="ngayNhapKho"><span class="editable entry-date" contenteditable="false" data-field="ngayNhapKho"></span></span></p>
+                                    <p>Ngày Xuất Kho <span><input type="date" class="date-picker hidden" data-field="ngayXuatKho"><span class="editable exit-date" contenteditable="false" data-field="ngayXuatKho"></span></span></p>
+                                    <p>Tình Trạng <span class="editable condition" contenteditable="false" data-field="tinhTrang">${status}</span></p>
+                                </div>
+                                <div class="info-block">
+                                    <h3>THÔNG SỐ KỸ THUẬT</h3>
+                                    <p>Loại Động Cơ <span class="editable engine-type" contenteditable="false" data-field="loaiDongCo"></span></p>
+                                    <p>Dung Tích Động Cơ <span class="editable engine-capacity" contenteditable="false" data-field="dungTichDongCo"></span></p>
+                                    <p>Hộp Số <span class="editable transmission" contenteditable="false" data-field="hopSo"></span></p>
+                                    <p>Hệ Động Cơ <span class="editable drive-type" contenteditable="false" data-field="heDongCo"></span></p>
+                                    <p>Mức Tiêu Thụ Nhiên Liệu <span class="editable fuel-consumption" contenteditable="false" data-field="mucTieuThuNhienLieu"></span></p>
+                                    <p>Kích Thước Xe <span class="editable dimensions" contenteditable="false" data-field="kichThuocXe"></span></p>
+                                    <p>Số Chỗ <span class="editable seats" contenteditable="false" data-field="soCho"></span></p>
+                                </div>
+                            </div>
+                        `;
+                        content.insertBefore(newDetail, content.querySelector('table').nextSibling);
+                        newDetail.style.display = 'block';
+                    }
+
+                    // Cập nhật dữ liệu chi tiết dựa trên mã xe
+                    const detail = document.querySelector('.car-detail[style*="display: block"]');
+                    if (detail) {
+                        const licensePlate = detail.querySelector('.license-plate');
+                        const entryDate = detail.querySelector('.entry-date');
+                        const entryDateInput = detail.querySelector('input[data-field="ngayNhapKho"]');
+                        const exitDate = detail.querySelector('.exit-date');
+                        const exitDateInput = detail.querySelector('input[data-field="ngayXuatKho"]');
+                        const engineType = detail.querySelector('.engine-type');
+                        const engineCapacity = detail.querySelector('.engine-capacity');
+                        const transmission = detail.querySelector('.transmission');
+                        const driveType = detail.querySelector('.drive-type');
+                        const fuelConsumption = detail.querySelector('.fuel-consumption');
+                        const dimensions = detail.querySelector('.dimensions');
+                        const seats = detail.querySelector('.seats');
+
+                        switch (code) {
+                            case '1122334':
+                                licensePlate.textContent = '36A-789-01';
+                                entryDate.textContent = '20-04-2025';
+                                entryDateInput.value = '2025-04-20';
+                                exitDate.textContent = '20-05-2025';
+                                exitDateInput.value = '2025-05-20';
+                                engineType.textContent = 'Xăng';
+                                engineCapacity.textContent = '1.2L';
+                                transmission.textContent = 'Tự động (4 cấp)';
+                                driveType.textContent = 'FWD';
+                                fuelConsumption.textContent = '5.5l/100K';
+                                dimensions.textContent = '3595x1595x1490';
+                                seats.textContent = '5 Chỗ';
+                                break;
+                            case '3344556':
+                                licensePlate.textContent = '50A-234-56';
+                                entryDate.textContent = '25-04-2025';
+                                entryDateInput.value = '2025-04-25';
+                                exitDate.textContent = '25-05-2025';
+                                exitDateInput.value = '2025-05-25';
+                                engineType.textContent = 'Xăng';
+                                engineCapacity.textContent = '2.4L';
+                                transmission.textContent = 'Tự động (6 cấp)';
+                                driveType.textContent = 'FWD';
+                                fuelConsumption.textContent = '6.2l/100K';
+                                dimensions.textContent = '4855x1860x1455';
+                                seats.textContent = '5 Chỗ';
+                                break;
+                            case '4455667':
+                                licensePlate.textContent = '47A-345-67';
+                                entryDate.textContent = '15-05-2025';
+                                entryDateInput.value = '2025-05-15';
+                                exitDate.textContent = '15-06-2025';
+                                exitDateInput.value = '2025-06-15';
+                                engineType.textContent = 'Xăng';
+                                engineCapacity.textContent = '2.0L';
+                                transmission.textContent = 'Tự động (6 cấp)';
+                                driveType.textContent = 'FWD';
+                                fuelConsumption.textContent = '6.8l/100K';
+                                dimensions.textContent = '4525x1805x1610';
+                                seats.textContent = '7 Chỗ';
+                                break;
+                            case '0123456':
+                                licensePlate.textContent = '30A-186-34';
+                                entryDate.textContent = '30-04-2025';
+                                entryDateInput.value = '2025-04-30';
+                                exitDate.textContent = '01-05-2025';
+                                exitDateInput.value = '2025-05-01';
+                                engineType.textContent = 'Xăng';
+                                engineCapacity.textContent = '2.0L';
+                                transmission.textContent = 'Tự động (5 cấp)';
+                                driveType.textContent = 'AMD';
+                                fuelConsumption.textContent = '5l/100K';
+                                dimensions.textContent = '2453x360x1540';
+                                seats.textContent = '4 Chỗ';
+                                break;
+                            case '5566778':
+                                licensePlate.textContent = '51A-678-90';
+                                entryDate.textContent = '12-05-2025';
+                                entryDateInput.value = '2025-05-12';
+                                exitDate.textContent = '12-06-2025';
+                                exitDateInput.value = '2025-06-12';
+                                engineType.textContent = 'Hybrid';
+                                engineCapacity.textContent = '1.6L';
+                                transmission.textContent = 'Tự động (7 cấp DCT)';
+                                driveType.textContent = 'FWD';
+                                fuelConsumption.textContent = '4.5l/100K';
+                                dimensions.textContent = '4660x1800x1450';
+                                seats.textContent = '5 Chỗ';
+                                break;
+                            case '2233445':
+                                licensePlate.textContent = '43A-901-23';
+                                entryDate.textContent = '05-05-2025';
+                                entryDateInput.value = '2025-05-05';
+                                exitDate.textContent = '05-06-2025';
+                                exitDateInput.value = '2025-06-05';
+                                engineType.textContent = 'Xăng';
+                                engineCapacity.textContent = '2.0L';
+                                transmission.textContent = 'Tự động (6 cấp)';
+                                driveType.textContent = 'FWD';
+                                fuelConsumption.textContent = '6l/100K';
+                                dimensions.textContent = '4320x1800x1450';
+                                seats.textContent = '5 Chỗ';
+                                break;
+                        }
+
+                        // Cập nhật dữ liệu vào localStorage sau khi lấy từ chi tiết
+                        carData.license = licensePlate.textContent;
+                        carData.entryDate = entryDate.textContent;
+                        carData.exitDate = exitDate.textContent;
+                        localStorage.setItem('selectedCar', JSON.stringify(carData));
+
+                        // Cập nhật ảnh (dùng placeholder)
+                        const images = detail.querySelectorAll('.car-images img');
+                        images[0].src = `https://via.placeholder.com/200x150?text=${model}+${brand}+Trái`;
+                        images[0].alt = `${model} ${brand} Trái`;
+                        images[1].src = `https://via.placeholder.com/200x150?text=${model}+${brand}+Sau`;
+                        images[1].alt = `${model} ${brand} Sau`;
+                        images[2].src = `https://via.placeholder.com/200x150?text=${model}+${brand}+Phải`;
+                        images[2].alt = `${model} ${brand} Phải`;
+                    }
+
+                    // Hiển thị nút khi chọn xe
+                    buttonContainer.style.display = 'flex';
+                });
+            });
+
+            // Xử lý nút "Giữ xe"
+            holdCarBtn.addEventListener('click', () => {
+                const selectedRow = document.querySelector('table tbody tr.bg-gray-200');
+                if (selectedRow) {
+                    buttonContainer.style.display = 'none';
+                    holdInfo.style.display = 'flex';
+                }
+            });
+
+            // Xử lý nút "Hoàn tác"
+            undoHoldBtn.addEventListener('click', () => {
+                holdInfo.style.display = 'none';
+                const selectedRow = document.querySelector('table tbody tr.bg-gray-200');
+                if (selectedRow) {
+                    buttonContainer.style.display = 'flex';
+                }
+            });
+
+            // Xử lý nút "Tùy chọn bổ sung"
+            additionalOptionsBtn.addEventListener('click', () => {
+                window.location.href = 'taohopdong.html';
+            });
+            // Thêm highlight cho hàng được chọn
+            rows.forEach(row => {
+                row.addEventListener('click', () => {
+                    rows.forEach(r => r.classList.remove('bg-gray-200'));
+                    row.classList.add('bg-gray-200');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

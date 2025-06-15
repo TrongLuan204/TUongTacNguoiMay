@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carly Customer Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            background-color: #633d38;
+        }
+        .sidebar ul li.active {
+            background-color: #8b5e57;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #d3d3d3;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex-grow: 1;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            padding: 5px;
+        }
+        .search-bar .filters select {
+            border: none;
+            outline: none;
+            margin-left: 10px;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+            background-color: #d3d3d3;
+            padding: 5px;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 5px center;
+        }
+        .customer-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #d3d3d3;
+        }
+        .customer-table th, .customer-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #fff;
+        }
+        .customer-table th {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .customer-table td {
+            background-color: #fff;
+        }
+        .customer-table td button {
+            padding: 5px 10px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .customer-table td button:hover {
+            background-color: #633d38;
+        }
+        .add-customer-btn {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .add-customer-btn:hover {
+            background-color: #633d38;
+        }
+        .add-customer-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+            z-index: 1000;
+        }
+        .add-customer-form.active {
+            display: block;
+        }
+        .add-customer-form h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #4a2c2a;
+            font-size: 20px;
+        }
+        .add-customer-form p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+        .add-customer-form label {
+            display: block;
+            margin: 8px 0 4px;
+            color: #333;
+            font-size: 12px;
+        }
+        .add-customer-form input,
+        .add-customer-form select {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 12px;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .add-customer-form .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+        }
+        .add-customer-form .form-actions {
+            text-align: right;
+            margin-top: 15px;
+        }
+        .add-customer-form .form-actions button {
+            padding: 8px 15px;
+            margin-left: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .add-customer-form .form-actions .save-btn {
+            background-color: #d3d3d3;
+            color: #333;
+        }
+        .add-customer-form .form-actions .save-btn:hover {
+            background-color: #c0c0c0;
+        }
+        .add-customer-form .form-actions .cancel-btn {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .add-customer-form .form-actions .cancel-btn:hover {
+            background-color: #633d38;
+        }
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 15px;
+            border: 2px solid #4a2c2a;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 2000;
+            font-size: 16px;
+            color: #333;
+        }
+        .success-message.active {
+            display: block;
+        }
+        .detail-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 350px;
+            z-index: 1000;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .detail-form.active {
+            display: block;
+        }
+        .detail-form h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #4a2c2a;
+            font-size: 20px;
+        }
+        .detail-form p {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .detail-form .form-actions {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .detail-form .form-actions button {
+            padding: 8px 15px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .detail-form .form-actions .back-btn {
+            background-color: #d3d3d3;
+            color: #333;
+        }
+        .detail-form .form-actions .back-btn:hover {
+            background-color: #c0c0c0;
+        }
+        .detail-form .form-actions .update-btn {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .detail-form .form-actions .update-btn:hover {
+            background-color: #633d38;
+        }
+        .edit-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 350px;
+            z-index: 1000;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .edit-form.active {
+            display: block;
+        }
+        .edit-form h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #4a2c2a;
+            font-size: 20px;
+        }
+        .edit-form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-size: 14px;
+        }
+        .edit-form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .edit-form .form-actions {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .edit-form .form-actions button {
+            padding: 8px 15px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .edit-form .form-actions .cancel-btn {
+            background-color: #d3d3d3;
+            color: #333;
+        }
+        .edit-form .form-actions .cancel-btn:hover {
+            background-color: #c0c0c0;
+        }
+        .edit-form .form-actions .save-btn {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .edit-form .form-actions .save-btn:hover {
+            background-color: #633d38;
+        }
+        .delete-confirm {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+            z-index: 1000;
+            text-align: center;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .delete-confirm.active {
+            display: block;
+        }
+        .delete-confirm h2 {
+            margin-top: 0;
+            color: #4a2c2a;
+            font-size: 20px;
+        }
+        .delete-confirm p {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .delete-confirm .form-actions {
+            margin-top: 20px;
+        }
+        .delete-confirm .form-actions button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .delete-confirm .form-actions .cancel-btn {
+            background-color: #d3d3d3;
+            color: #333;
+        }
+        .delete-confirm .form-actions .cancel-btn:hover {
+            background-color: #c0c0c0;
+        }
+        .delete-confirm .form-actions .delete-btn {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .delete-confirm .form-actions .delete-btn:hover {
+            background-color: #633d38;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+           <li onclick="window.location.href='Dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li>QUẢN LÝ LỊCH HẸN</li>
+            <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
+            <li class="active">QUẢN LÝ THÔNG TIN KHÁCH HÀNG</li>
+            <li>QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Tên khách hàng, số điện thoại, email...">
+            <div class="filters">
+                <select name="status" id="statusFilter">
+                    <option value="">TRẠNG THÁI</option>
+                    <option value="VIP">VIP</option>
+                    <option value="Regular">Thường</option>
+                </select>
+                <select name="sort" id="sortFilter">
+                    <option value="">SẮP XẾP</option>
+                    <option value="name">Tên</option>
+                    <option value="date">Ngày</option>
+                </select>
+            </div>
+        </div>
+        <table class="customer-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên khách hàng</th>
+                    <th>Số điện thoại</th>
+                    <th>Trạng thái</th>
+                    <th>Email</th>
+                    <th>Mã khách hàng</th>
+                    <th>Mã xe</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Nguyễn Đình Hiếu</td>
+                    <td>23456789</td>
+                    <td>VIP</td>
+                    <td>dinhhieunguyen248@gmail.com</td>
+                    <td>00123456A</td>
+                    <td>07123456A</td>
+                    <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '23456789', 'dinhhieunguyen248@gmail.com', '3/6/2004', '0971288904', '001204002760', 'Số 07, Nguyễn Bá Ngọc, Phường Ba Đình, Thành phố Thanh Hóa', 'VIP', 'Sản phẩm Toyota Supra(2/5/2024), Sản phẩm Vinfast VF10(3/5/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đình Hiếu', '23456789', 'dinhhieunguyen248@gmail.com', '3/6/2004', '0971288904', '001204002760', 'Số 07, Nguyễn Bá Ngọc, Phường Ba Đình, Thành phố Thanh Hóa', 'VIP', 'Sản phẩm Toyota Supra(2/5/2024), Sản phẩm Vinfast VF10(3/5/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đình Hiếu')">Xóa</button></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Nguyễn Đình Hiếu</td>
+                    <td>0912345678</td>
+                    <td>VIP</td>
+                    <td>dinhhieunguyen248@gmail.com</td>
+                    <td>00123456B</td>
+                    <td>07123456B</td>
+                    <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002761', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002761', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Nguyễn Đình Hiếu</td>
+                    <td>0912345678</td>
+                    <td>VIP</td>
+                    <td>dinhhieunguyen248@gmail.com</td>
+                    <td>00123456C</td>
+                    <td>07123456C</td>
+                    <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002762', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002762', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Nguyễn Đình Hiếu</td>
+                    <td>0912345678</td>
+                    <td>VIP</td>
+                    <td>dinhhieunguyen248@gmail.com</td>
+                    <td>00123456D</td>
+                    <td>07123456D</td>
+                    <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002763', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002763', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="add-customer-btn" onclick="showAddCustomerForm()">Thêm khách hàng</button>
+    </div>
+    <div class="add-customer-form" id="addCustomerForm">
+        <button class="close-btn" onclick="hideAddCustomerForm()">×</button>
+        <h2>THÊM KHÁCH HÀNG</h2>
+        <p><i class="fas fa-info-circle"></i> Thông tin cần nhập <i class="fas fa-info-circle"></i> Lưu hồ sơ thông tin</p>
+        <form>
+            <label><span style="color: red;">*</span> Họ và tên khách hàng:</label>
+            <input type="text" placeholder="Số OOOĐ:">
+            <label><span style="color: red;">*</span> Ngày cấp / Nơi cấp:</label>
+            <input type="text" placeholder="dd/mm/yyyy">
+            <label><span style="color: red;">*</span> Ngày sinh / Giới tính:</label>
+            <input type="text" placeholder="dd/mm/yyyy"> <select>
+                <option value="">Nam</option>
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+            </select>
+            <label><span style="color: red;">*</span> Địa chỉ:</label>
+            <input type="text" placeholder="Tỉnh / Thành phố"> <select>
+                <option value="">Quận / Huyện</option>
+                <option value="district1">Quận 1</option>
+                <option value="district2">Quận 2</option>
+            </select>
+            <label><span style="color: red;">*</span> Địa chỉ cụ thể:</label>
+            <input type="text" placeholder="Phường / Xã / Tỉnh / Thành phố / Số nhà, tên đường...">
+            <label><span style="color: red;">*</span> SĐT / Mail:</label>
+            <input type="text" placeholder="Mail">
+            <label><span style="color: red;">*</span> Số Thẻ:</label>
+            <input type="text" placeholder="Mã Thước">
+            <div class="form-actions">
+                <button type="button" class="save-btn" onclick="saveCustomer()">Quay Lại</button>
+                <button type="button" class="cancel-btn" onclick="confirmCustomer()">Xác Nhận</button>
+            </div>
+        </form>
+    </div>
+    <div class="success-message" id="successMessage">
+        <span>✔</span> Thêm khách hàng thành công
+    </div>
+    <div class="detail-form" id="detailForm">
+        <h2>THÔNG TIN KHÁCH HÀNG</h2>
+        <p><strong>Tên :</strong> <span id="detailName"></span></p>
+        <p><strong>SDT :</strong> <span id="detailPhone"></span></p>
+        <p><strong>Email :</strong> <span id="detailEmail"></span></p>
+        <p><strong>Ngày sinh :</strong> <span id="detailBirth"></span></p>
+        <p><strong>Mã số thuế :</strong> <span id="detailTax"></span></p>
+        <p><strong>CCCD :</strong> <span id="detailCCCD"></span></p>
+        <p><strong>Địa chỉ :</strong> <span id="detailAddress"></span></p>
+        <p><strong>Loại khách hàng :</strong> <span id="detailCustomerType"></span></p>
+        <p><strong>Lịch sử mua hàng :</strong> <span id="detailPurchaseHistory"></span></p>
+        <div class="form-actions">
+            <button class="back-btn" onclick="hideDetailForm()">Quay lại</button>
+            <button class="update-btn" onclick="showEditForm(document.getElementById('detailName').textContent, document.getElementById('detailPhone').textContent, document.getElementById('detailEmail').textContent, document.getElementById('detailBirth').textContent, document.getElementById('detailTax').textContent, document.getElementById('detailCCCD').textContent, document.getElementById('detailAddress').textContent, document.getElementById('detailCustomerType').textContent, document.getElementById('detailPurchaseHistory').textContent)">Sửa</button>
+        </div>
+    </div>
+    <div class="edit-form" id="editForm">
+        <h2>THÔNG TIN KHÁCH HÀNG</h2>
+        <form>
+            <label>Tên :</label>
+            <input type="text" id="editName" value="">
+            <label>SDT :</label>
+            <input type="text" id="editPhone" value="">
+            <label>Email :</label>
+            <input type="text" id="editEmail" value="">
+            <label>Ngày sinh :</label>
+            <input type="text" id="editBirth" value="">
+            <label>Mã số thuế :</label>
+            <input type="text" id="editTax" value="">
+            <label>CCCD :</label>
+            <input type="text" id="editCCCD" value="">
+            <label>Địa chỉ :</label>
+            <input type="text" id="editAddress" value="">
+            <label>Loại khách hàng :</label>
+            <input type="text" id="editCustomerType" value="">
+            <label>Lịch sử mua hàng :</label>
+            <input type="text" id="editPurchaseHistory" value="">
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="hideEditForm()">Hủy</button>
+                <button type="button" class="save-btn" onclick="saveEditedCustomer()">Lưu</button>
+            </div>
+        </form>
+    </div>
+    <div class="delete-confirm" id="deleteConfirm">
+        <h2>XÓA KHÁCH HÀNG</h2>
+        <p>Bạn có chắc chắn muốn xóa khách hàng <span id="deleteName"></span></p>
+        <div class="form-actions">
+            <button class="cancel-btn" onclick="hideDeleteConfirm()">Hủy</button>
+            <button class="delete-btn" onclick="confirmDelete()">Xóa</button>
+        </div>
+    </div>
+    <div class="success-message" id="editSuccessMessage">
+        <span>✔</span> Lưu thành công
+    </div>
+    <script>
+        // Basic search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.customer-table tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Show add customer form
+        function showAddCustomerForm() {
+            document.getElementById('addCustomerForm').classList.add('active');
+        }
+
+        // Hide add customer form
+        function hideAddCustomerForm() {
+            document.getElementById('addCustomerForm').classList.remove('active');
+        }
+
+        // Show success message and hide form
+        function confirmCustomer() {
+            hideAddCustomerForm();
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('active');
+            setTimeout(() => {
+                successMessage.classList.remove('active');
+            }, 2000);
+        }
+
+        // Placeholder for save customer function
+        function saveCustomer() {
+            alert('Thông tin khách hàng đã được lưu!');
+            hideAddCustomerForm();
+        }
+
+        // Show detail form with customer data
+        function showDetailForm(name, phone, email, birth, tax, cccd, address, customerType, purchaseHistory) {
+            document.getElementById('detailName').textContent = name;
+            document.getElementById('detailPhone').textContent = phone;
+            document.getElementById('detailEmail').textContent = email;
+            document.getElementById('detailBirth').textContent = birth;
+            document.getElementById('detailTax').textContent = tax;
+            document.getElementById('detailCCCD').textContent = cccd;
+            document.getElementById('detailAddress').textContent = address;
+            document.getElementById('detailCustomerType').textContent = customerType;
+            document.getElementById('detailPurchaseHistory').textContent = purchaseHistory;
+            document.getElementById('detailForm').classList.add('active');
+        }
+
+        // Hide detail form
+        function hideDetailForm() {
+            document.getElementById('detailForm').classList.remove('active');
+        }
+
+        // Show edit form with customer data
+        function showEditForm(name, phone, email, birth, tax, cccd, address, customerType, purchaseHistory) {
+            document.getElementById('editName').value = name;
+            document.getElementById('editPhone').value = phone;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editBirth').value = birth;
+            document.getElementById('editTax').value = tax;
+            document.getElementById('editCCCD').value = cccd;
+            document.getElementById('editAddress').value = address;
+            document.getElementById('editCustomerType').value = customerType;
+            document.getElementById('editPurchaseHistory').value = purchaseHistory;
+            hideDetailForm(); // Hide detail form if open
+            document.getElementById('editForm').classList.add('active');
+        }
+
+        // Hide edit form
+        function hideEditForm() {
+            document.getElementById('editForm').classList.remove('active');
+        }
+
+        // Save edited customer
+        function saveEditedCustomer() {
+            const name = document.getElementById('editName').value;
+            const phone = document.getElementById('editPhone').value;
+            const email = document.getElementById('editEmail').value;
+            const birth = document.getElementById('editBirth').value;
+            const tax = document.getElementById('editTax').value;
+            const cccd = document.getElementById('editCCCD').value;
+            const address = document.getElementById('editAddress').value;
+            const customerType = document.getElementById('editCustomerType').value;
+            const purchaseHistory = document.getElementById('editPurchaseHistory').value;
+
+            showDetailForm(name, phone, email, birth, tax, cccd, address, customerType, purchaseHistory);
+            hideEditForm();
+            const editSuccessMessage = document.getElementById('editSuccessMessage');
+            editSuccessMessage.classList.add('active');
+            setTimeout(() => {
+                editSuccessMessage.classList.remove('active');
+            }, 2000);
+        }
+
+        // Show delete confirmation
+        function showDeleteConfirm(name) {
+            document.getElementById('deleteName').textContent = name;
+            document.getElementById('deleteConfirm').classList.add('active');
+        }
+
+        // Hide delete confirmation
+        function hideDeleteConfirm() {
+            document.getElementById('deleteConfirm').classList.remove('active');
+        }
+
+        // Confirm delete action
+        function confirmDelete() {
+            const name = document.getElementById('deleteName').textContent;
+            alert(`Khách hàng ${name} đã được xóa!`);
+            hideDeleteConfirm();
+            // Add logic to remove the customer from the table if needed
+        }
+    </script>
+</html>
