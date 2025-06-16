@@ -70,37 +70,38 @@
             font-size: 16px;
             padding: 5px;
         }
-        .search-bar .filters {
-            display: flex;
-            align-items: center;
+        .search-bar button {
+            border: none;
+            background: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #333;
             margin-left: 10px;
         }
-        .search-bar .filters select {
-            border: none;
-            outline: none;
-            margin-left: 10px;
+        .advanced-filter-panel {
+            display: none;
+            background-color: #d3d3d3;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        .advanced-filter-panel.active {
+            display: block;
+        }
+        .advanced-filter-panel select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
             font-family: 'Archivo Narrow', sans-serif;
             font-size: 14px;
-            background-color: #d3d3d3;
-            padding: 5px;
+            border: none;
+            outline: none;
+            background-color: #fff;
             appearance: none;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
             background-repeat: no-repeat;
             background-position: right 5px center;
-        }
-        .search-bar .filters .color-select {
-            position: relative;
-            padding-right: 20px;
-        }
-        .search-bar .filters .color-select::after {
-            content: "\f53f";
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #333;
         }
         .car-list {
             display: flex;
@@ -166,33 +167,20 @@
             color: #fff;
             border-radius: 3px;
         }
-        .search-options {
-            margin-top: 10px;
-            background-color: #d3d3d3;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
-        .search-options.active {
-            display: block;
-        }
-        .search-options label {
-            margin-right: 10px;
-            font-family: 'Archivo Narrow', sans-serif;
-            font-size: 14px;
-        }
-        .search-options button {
-            margin-top: 10px;
-            padding: 5px 10px;
-            font-family: 'Archivo Narrow', sans-serif;
-            font-size: 14px;
+        .add-car-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
             background-color: #8b5e57;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
         }
-        .search-options button:hover {
+        .add-car-button:hover {
             background-color: #633d38;
         }
     </style>
@@ -213,47 +201,17 @@
     <div class="content">
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Tìm kiếm thông tin xe ...">
-            <div class="filters">
-                <select name="day" id="dayFilter">
-                    <option value="">NGÀY</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <!-- Thêm các ngày từ 1-31 -->
-                </select>
-                <select name="month" id="monthFilter">
-                    <option value="">THÁNG</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <!-- Thêm các tháng từ 1-12 -->
-                </select>
-                <select name="year" id="yearFilter">
-                    <option value="">NĂM</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                    <!-- Thêm các năm cần thiết -->
-                </select>
-                <select name="color" id="colorFilter" class="color-select">
-                    <option value="">MÀU</option>
-                    <option value="red">Đỏ</option>
-                    <option value="white">Trắng</option>
-                    <!-- Thêm các màu cần thiết -->
-                </select>
-            </div>
+            <button id="filterButton"><i class="fas fa-filter"></i></button>
         </div>
-        <div class="search-options" id="searchOptions">
-            <div>
-                <label>Màu sắc:</label>
-                <label><input type="checkbox" name="color" value="red"> Đỏ</label>
-                <label><input type="checkbox" name="color" value="blue"> Xanh nước biển</label>
-                <label><input type="checkbox" name="color" value="white"> Trắng</label>
-                <label><input type="checkbox" name="color" value="black"> Đen</label>
-            </div>
-            <div>
-                <label>Giá:</label>
-                <label><input type="checkbox" name="price" value="over500"> Trên 500.000.000</label>
-                <label><input type="checkbox" name="price" value="under500"> Dưới 500.000.000</label>
-            </div>
-            <button onclick="filterCars()">Tìm kiếm</button>
+        <div class="advanced-filter-panel" id="advancedFilterPanel">
+            <select id="filterCategory">
+                <option value="">Chọn danh mục</option>
+                <option value="color">Màu sắc</option>
+                <option value="price">Giá</option>
+            </select>
+            <select id="filterValue" disabled>
+                <option value="">Chọn giá trị</option>
+            </select>
         </div>
         <div class="car-list">
             <div class="car-brands">
@@ -270,27 +228,27 @@
                 </ul>
             </div>
             <div class="car-grid" id="carGrid">
-                <div class="car-item" data-color="red" data-price="over500" onclick="window.location.href='sorento-detail.html'">
+                <div class="car-item" data-brand="kia" data-color="red" data-price="over500" onclick="window.location.href='sorento-detail.html'">
                     <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494690954_979529017422518_6399698188603564204_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeH3-5vvkPiZ7etnLzVHd-KTXjCmjbQPXxFeMKaNtA9fES5kmizz8bNEWxcRlRPRcgSyr_ZRHziitpkgFHWd_vVT&_nc_ohc=SJ5XHV1ToowQ7kNvwE4nYna&_nc_oc=Adlrv3ZriOgFszcWZdnVSpujplrpNmjBcVa-ij5VFZOylcw_2UK6ugRxLLmdZUkPS6e_p9nic-P5o4QT4eC3cXpd&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gGdvocz-JkudUZu4y9mTK7SzcPAcmByBJOENHgjeSzvEg&oe=687262DD" alt="KIA SORENTO">
                     <p>KIA SORENTO</p>
                 </div>
-                <div class="car-item" data-color="white" data-price="under500" onclick="window.location.href='morning-detail.html'">
+                <div class="car-item" data-brand="kia" data-color="white" data-price="under500" onclick="window.location.href='morning-detail.html'">
                     <img src="https://scontent.fhan14-3.fna.fbcdn.net/v/t1.15752-9/494690411_1663462837672424_8134190197628575036_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHt_JBXkD6LT4jmCvLVcuiq3uwI49n9QyPe7Ajj2f1DIxmUjus-WwEVtkFEFjRJv7eRBR3ZhA-zVkqvLVXAUoC3&_nc_ohc=WicGutFLs2UQ7kNvwFoQLF7&_nc_oc=Admm9g0nXQ9Y4SQevrrjDyqjeBHerjXT2fA61xWc8pxdUzk9R3-GJ-AzUrDkeeRYULynBuItit8ec5S6V1kYyW38&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&oh=03_Q7cD2gFguUpJREvD2Fo5OjisbpK-qFxH_RCrKLcZ_9e5F4vo1Q&oe=68726BFC" alt="KIA MORNING">
                     <p>KIA MORNING</p>
                 </div>
-                <div class="car-item" data-color="white" data-price="under500" onclick="window.location.href='forte-hatchback-detail.html'">
+                <div class="car-item" data-brand="kia" data-color="white" data-price="under500" onclick="window.location.href='forte-hatchback-detail.html'">
                     <img src="https://scontent.fhan14-4.fna.fbcdn.net/v/t1.15752-9/505479461_733182415736193_9186496118486746676_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeFjpCku5oW4gqESKTYAKcPM3pMnk_uNkhfekyeT-42SF1nLbXeNBr6M2j9B6vNvvU9yNK0EboABoG5ZzFIXeVlj&_nc_ohc=zBfPAd2bA8QQ7kNvwF2mxx0&_nc_oc=Adl6na-tpyNgdwOfjh7iBjmPKfukqKwdfXcGWrrbElKH5-9PbPkBHG8xjr4CXpiybnsgPt-LNaJAu4hAJeATH3mL&_nc_zt=23&_nc_ht=scontent.fhan14-4.fna&oh=03_Q7cD2gG3ALcRa9yzaNaL9RH9gl5ybJ965Auld_ZouqK_ezTedg&oe=68726381" alt="KIA FORTE HATCHBACK">
                     <p>KIA FORTE HATCHBACK</p>
                 </div>
-                <div class="car-item" data-color="white" data-price="over500" onclick="window.location.href='optimal-sedan-detail.html'">
+                <div class="car-item" data-brand="kia" data-color="white" data-price="over500" onclick="window.location.href='optimal-sedan-detail.html'">
                     <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494688849_2679826999062224_1990608322716600848_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEU9_nEuLM4QEEU3OD0tyxTjls-AU_sOuuOWz4BT-w66zQh7kjSXqT2CmC8AI39wvSXfXISvCG2RnSXVgx2eGJW&_nc_ohc=7UjDsOhkuBMQ7kNvwEWmX7B&_nc_oc=Adn9ks07Lobxd4MZ6PWZwr3LqJMAtE7QW7H7FQtCrqanSGeIvcioXCtEEH1xDWsnOKpmIMwZQ7OshrdKT0ETSeJQ&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gHXkAJIcfKx2TBvcy7N-i3HNvMAFPAkHTvtMMcNkcFtLg&oe=68724EFC" alt="KIA OPTIMAL SEDAN">
                     <p>KIA OPTIMAL SEDAN</p>
                 </div>
-                <div class="car-item" data-color="blue" data-price="over500" onclick="window.location.href='rondo-detail.html'">
+                <div class="car-item" data-brand="kia" data-color="blue" data-price="over500" onclick="window.location.href='rondo-detail.html'">
                     <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494691586_1641236853203744_6578634669970737686_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHZf_3PEIUkXSdAzwjFkFQ3Syc9Nh68kc9LJz02HryRz6u9cA1162C-0Yg3qhDOl_CeYu3_cCNgSxp2AbYXj4Tx&_nc_ohc=Ye-9ZmFYFicQ7kNvwHmwaJn&_nc_oc=AdlZfXpnYRAbnQCiWDGXaWa-LkVn-TSLMw-3Zi8MkyjyPV6E7l5qqcqQY9uOYv1nBgSWB8ZRb11OQQirdn_Vh422&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFjrZt61yRw_Zh373NJEKXMERq7QYwRJSRmRyNnOQEJrw&oe=68727442" alt="KIA RONDO">
                     <p>KIA RONDO</p>
                 </div>
-                <div class="car-item" data-color="blue" data-price="over500" onclick="window.location.href='hybrid-sedan-detail.html'">
+                <div class="car-item" data-brand="kia" data-color="blue" data-price="over500" onclick="window.location.href='hybrid-sedan-detail.html'">
                     <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494819325_1026861652966811_103346535768454730_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeFLx4QiTlMxDx13UAeSjwu4LgtVPLq_R3kuC1U8ur9HeVSpaTm4VXAI5VL9LNm4t8CStU2RTioMNd5TIDkJ40Oj&_nc_ohc=zn6RCoTVQL0Q7kNvwFnCY-H&_nc_oc=AdknWwOGL_A2Utd7MCFrRIePFQXLRi94ku97Rkn29bL8R0BtFGXN9UK9EO3sTl8HiEXutisG8VatlgNgUV4hJ1sB&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gGCJyPU-o3HnbLmmDFKiS12yVq9qVnyLYs8VMwlxHBNrw&oe=6872609E" alt="KIA HYBRID SEDAN">
                     <p>KIA HYBRID SEDAN</p>
                 </div>
@@ -306,32 +264,43 @@
             <span>36</span>
         </div>
     </div>
+    <button class="add-car-button" onclick="window.location.href='themxe.html'">Thêm xe mới</button>
     <script>
-        function filterCars() {
-            const colorFilters = Array.from(document.querySelectorAll('input[name="color"]:checked')).map(cb => cb.value);
-            const priceFilters = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(cb => cb.value);
-            const carItems = document.querySelectorAll('.car-item');
+        const filterButton = document.getElementById('filterButton');
+        const advancedFilterPanel = document.getElementById('advancedFilterPanel');
+        const filterCategory = document.getElementById('filterCategory');
+        const filterValue = document.getElementById('filterValue');
 
-            carItems.forEach(item => {
-                const itemColor = item.getAttribute('data-color');
-                const itemPrice = item.getAttribute('data-price');
-                let show = true;
+        filterButton.addEventListener('click', function() {
+            advancedFilterPanel.classList.toggle('active');
+        });
 
-                if (colorFilters.length > 0 && !colorFilters.includes(itemColor)) show = false;
-                if (priceFilters.length > 0 && !priceFilters.includes(itemPrice)) show = false;
-
-                item.style.display = show ? 'block' : 'none';
-            });
-        }
-
-        // Hiển thị/ẩn search-options khi nhập vào thanh tìm kiếm
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchOptions = document.getElementById('searchOptions');
-            if (this.value.trim() !== '') {
-                searchOptions.classList.add('active');
-            } else {
-                searchOptions.classList.remove('active');
+        filterCategory.addEventListener('change', function() {
+            filterValue.disabled = false;
+            filterValue.innerHTML = '<option value="">Chọn giá trị</option>';
+            if (this.value === 'color') {
+                ['Đỏ', 'Trắng', 'Xanh nước biển', 'Đen'].forEach(color => {
+                    const option = document.createElement('option');
+                    option.value = color.toLowerCase().replace(' ', '_');
+                    option.textContent = color;
+                    filterValue.appendChild(option);
+                });
+            } else if (this.value === 'price') {
+                ['Trên 500.000.000', 'Dưới 500.000.000'].forEach(price => {
+                    const option = document.createElement('option');
+                    option.value = price.replace(' ', '_').toLowerCase();
+                    option.textContent = price;
+                    filterValue.appendChild(option);
+                });
             }
+        });
+
+        filterValue.addEventListener('change', function() {
+            const carItems = document.querySelectorAll('.car-item');
+            carItems.forEach(item => {
+                const itemData = item.getAttribute(`data-${filterCategory.value}`);
+                item.style.display = (this.value === '' || itemData === this.value.replace('_', ' ')) ? 'block' : 'none';
+            });
         });
     </script>
 </body>

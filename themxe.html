@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Xe Mới - Carly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            background-color: #633d38;
+        }
+        .sidebar ul li.active {
+            background-color: #8b5e57;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-section h2 {
+            font-size: 18px;
+            color: #4a2c2a;
+            margin-bottom: 10px;
+        }
+        .form-column {
+            flex: 1;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 5px;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .image-upload {
+            margin-top: 10px;
+        }
+        .image-upload input[type="file"] {
+            width: 100%;
+        }
+        .boxtitle {
+            background-color: #8b5e57;
+            color: #fff;
+            padding: 5px;
+            text-align: center;
+            border-radius: 3px 3px 0 0;
+            margin-bottom: 5px;
+        }
+        .position-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .position-buttons button {
+            flex: 1;
+            padding: 10px;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+            border: none;
+            background-color: #8b5e57;
+            color: #fff;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .position-buttons button:hover {
+            background-color: #633d38;
+        }
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .submit-button:hover {
+            background-color: #633d38;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+            <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</li>
+            <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
+            <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
+            <li onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="form-container">
+            <h1>Thêm xe mới</h1>
+            <div class="form-section">
+                <div class="form-column">
+                    <h2>Thông tin chi tiết</h2>
+                    <div class="form-group">
+                        <label for="maXe">Mã xe</label>
+                        <input type="text" id="maXe" name="maXe">
+                    </div>
+                    <div class="form-group">
+                        <label for="maSX">Mã số xe</label>
+                        <input type="text" id="maSX" name="maSX">
+                    </div>
+                    <div class="form-group">
+                        <label for="maXeKho">Mã xe kho</label>
+                        <input type="text" id="maXeKho" name="maXeKho">
+                    </div>
+                    <div class="form-group">
+                        <label for="ngayNhapKho">Ngày nhập kho</label>
+                        <input type="date" id="ngayNhapKho" name="ngayNhapKho">
+                    </div>
+                    <div class="form-group">
+                        <label for="tinTrang">Tình trạng</label>
+                        <select id="tinTrang" name="tinTrang">
+                            <option value="moi">Mới</option>
+                            <option value="daSuDung">Đã sử dụng</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <h2>Thông số kỹ thuật</h2>
+                    <div class="form-group">
+                        <label for="loaiDongCo">Loại động cơ</label>
+                        <input type="text" id="loaiDongCo" name="loaiDongCo">
+                    </div>
+                    <div class="form-group">
+                        <label for="dungTichDongCo">Dung tích động cơ</label>
+                        <input type="text" id="dungTichDongCo" name="dungTichDongCo">
+                    </div>
+                    <div class="form-group">
+                        <label for="hopSo">Hộp số</label>
+                        <input type="text" id="hopSo" name="hopSo">
+                    </div>
+                    <div class="form-group">
+                        <label for="mauXe">Màu xe</label>
+                        <input type="text" id="mauXe" name="mauXe">
+                    </div>
+                    <div class="form-group">
+                        <label for="soCho">Số chỗ</label>
+                        <input type="number" id="soCho" name="soCho" min="1">
+                    </div>
+                    <div class="form-group position-buttons">
+                        <label>Vị trí</label>
+                        <div>
+                            <button type="button" onclick="setPosition('trai')">Trái</button>
+                            <button type="button" onclick="setPosition('sau')">Sau</button>
+                            <button type="button" onclick="setPosition('phai')">Phải</button>
+                        </div>
+                    </div>
+                    <div class="form-group image-upload">
+                        <div class="boxtitle">Ảnh Trái</div>
+                        <input type="file" id="imageTrai" name="imageTrai" accept="image/*">
+                    </div>
+                    <div class="form-group image-upload">
+                        <div class="boxtitle">Ảnh Giữa</div>
+                        <input type="file" id="imageSau" name="imageSau" accept="image/*">
+                    </div>
+                    <div class="form-group image-upload">
+                        <div class="boxtitle">Ảnh Sau</div>
+                        <input type="file" id="imagePhai" name="imagePhai" accept="image/*">
+                    </div>
+                </div>
+            </div>
+            <button class="submit-button" onclick="submitForm()">Thêm xe</button>
+        </div>
+    </div>
+    <script>
+        function setPosition(position) {
+            document.getElementById('tinTrang').value = position === 'moi' ? 'moi' : 'daSuDung';
+        }
+
+        function submitForm() {
+            const imageTrai = document.getElementById('imageTrai').files[0];
+            const imageSau = document.getElementById('imageSau').files[0];
+            const imagePhai = document.getElementById('imagePhai').files[0];
+
+            if (!imageTrai || !imageSau || !imagePhai) {
+                alert('Vui lòng chọn ảnh cho tất cả các vị trí (Trái, Sau, Phải)!');
+                return;
+            }
+
+            // Logic giả lập upload ảnh và thêm xe
+            alert('Xe và các ảnh đã được thêm thành công!');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

@@ -64,6 +64,18 @@
             gap: 10px;
             margin-bottom: 20px;
         }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 8px 12px;
+            border: 1px solid #73605B;
+            border-radius: 4px;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+            color: #73605B;
+            width: 200px;
+        }
         .filters select {
             padding: 8px 12px;
             border: 1px solid #73605B;
@@ -80,7 +92,7 @@
         }
         table {
             width: 100%;
-            border-collapse: collapse;
+border-collapse: collapse;
             margin-bottom: 20px;
         }
         table, th, td {
@@ -190,7 +202,7 @@
             justify-content: space-between;
             align-items: center;
             background-color: #d9d9d9;
-            padding: 10px 20px;
+padding: 10px 20px;
             margin-top: 20px;
             border-radius: 5px;
         }
@@ -257,7 +269,7 @@
 <body>
     <div class="sidebar">
         <div class="logo">
-            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.p...68725D71" alt="Carly Logo">
         </div>
         <ul>
            <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
@@ -269,7 +281,10 @@
     </div>
     <div class="content">
         <div class="header">
-            <h1>CHỌN XE TỪ KHO</h1>
+<h1>CHỌN XE TỪ KHO</h1>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm tên xe...">
         </div>
         <div class="filters">
             <select>
@@ -333,7 +348,7 @@
                 <tr data-code="0123456" data-model="Kia Sorento" data-brand="Kia" data-year="2025" data-color="Đỏ" data-price="950000000" data-status="Mới">
                     <td>0123456</td>
                     <td>Kia Sorento</td>
-                    <td>Kia</td>
+<td>Kia</td>
                     <td>2025</td>
                     <td>Đỏ</td>
                     <td>950000000</td>
@@ -399,7 +414,8 @@
             const holdCarBtn = document.getElementById('holdCar');
             const undoHoldBtn = document.getElementById('undoHold');
             const closeOptionsBtn = document.getElementById('closeOptions');
-            const createQuoteBtn = document.getElementById('createQuote');
+const createQuoteBtn = document.getElementById('createQuote');
+            const searchInput = document.getElementById('searchInput');
 
             // Dữ liệu tùy chọn bổ sung
             const additionalOptions = [
@@ -461,6 +477,22 @@
             // Ẩn nút mặc định
             buttonContainer.style.display = 'none';
 
+            // Hàm lọc bảng theo tên xe
+            function filterTable() {
+const searchTerm = searchInput.value.toLowerCase();
+                rows.forEach(row => {
+                    const model = row.cells[1].textContent.toLowerCase();
+                    if (model.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            // Thêm sự kiện cho input tìm kiếm
+            searchInput.addEventListener('input', filterTable);
+
             rows.forEach(row => {
                 row.addEventListener('click', () => {
                     const details = content.querySelectorAll('.car-detail');
@@ -509,7 +541,7 @@
                                     <img src="" alt="Car Left">
                                 </div>
                                 <div class="image-section">
-                                    <h4>SAU</h4>
+<h4>SAU</h4>
                                     <img src="" alt="Car Rear">
                                 </div>
                                 <div class="image-section">
@@ -537,7 +569,7 @@
                                     <p>Hệ Động Cơ <span class="editable drive-type" contenteditable="false" data-field="heDongCo"></span></p>
                                     <p>Mức Tiêu Thụ Nhiên Liệu <span class="editable fuel-consumption" contenteditable="false" data-field="mucTieuThuNhienLieu"></span></p>
                                     <p>Kích Thước Xe <span class="editable dimensions" contenteditable="false" data-field="kichThuocXe"></span></p>
-                                    <p>Số Chỗ <span class="editable seats" contenteditable="false" data-field="soCho"></span></p>
+<p>Số Chỗ <span class="editable seats" contenteditable="false" data-field="soCho"></span></p>
                                 </div>
                             </div>
                         `;
@@ -582,7 +614,7 @@
                                 entryDateInput.value = '2025-04-25';
                                 exitDate.textContent = '25-05-2025';
                                 exitDateInput.value = '2025-05-25';
-                                engineType.textContent = 'Xăng';
+engineType.textContent = 'Xăng';
                                 engineCapacity.textContent = '2.4L';
                                 transmission.textContent = 'Tự động (6 cấp)';
                                 driveType.textContent = 'FWD';
@@ -627,7 +659,7 @@
                                 engineType.textContent = 'Hybrid';
                                 engineCapacity.textContent = '1.6L';
                                 transmission.textContent = 'Tự động (7 cấp DCT)';
-                                driveType.textContent = 'FWD';
+driveType.textContent = 'FWD';
                                 fuelConsumption.textContent = '4.5l/100K';
                                 dimensions.textContent = '4660x1800x1450';
                                 seats.textContent = '5 Chỗ';
@@ -681,7 +713,7 @@
             // Xử lý nút "Hoàn tác"
             undoHoldBtn.addEventListener('click', () => {
                 holdInfo.style.display = 'none';
-                const selectedRow = document.querySelector('table tbody tr.bg-gray-200');
+const selectedRow = document.querySelector('table tbody tr.bg-gray-200');
                 if (selectedRow) {
                     buttonContainer.style.display = 'flex';
                 }

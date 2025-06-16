@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hợp Đồng Xe</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -103,7 +104,7 @@
             font-size: 16px;
             color: #333;
         }
-        .total-row {
+.total-row {
             font-weight: bold;
             border-top: 1px solid #ccc;
             padding-top: 5px;
@@ -147,10 +148,10 @@
 <body>
     <div class="sidebar">
         <div class="logo">
-            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.p...68725D71" alt="Carly Logo">
         </div>
         <ul>
-           <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
             <li onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</li>
             <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
             <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
@@ -175,7 +176,7 @@
                     </div>
                 </div>
                 <div class="section">
-                    <div class="section-header">THÔNG TIN CHỨNG</div>
+<div class="section-header">THÔNG TIN CHỨNG</div>
                     <div class="section-row">
                         <span>Thời gian lập hợp đồng</span>
                         <span class="editable" id="contract-time">21-06-2025</span>
@@ -232,7 +233,7 @@
                         <span>Ngày cấp</span>
                         <span class="editable" id="party-b-issue-date">21-04-2021</span>
                     </div>
-                    <div class="section-row">
+<div class="section-row">
                         <span>Nơi cấp</span>
                         <span class="editable" id="party-b-issue-place">Cục Cảnh sát Quản lý Hành chính, Hà Nội</span>
                     </div>
@@ -296,7 +297,7 @@
                     <span id="car-price"></span>
                 </div>
             </div>
-            <div class="section">
+<div class="section">
                 <div class="section-header">CHIẾT KHẤU</div>
                 <div class="section-row">
                     <span>Giá xe</span>
@@ -327,11 +328,11 @@
                 <div class="section-header">ĐIỀU KHOẢN VÀ GHI CHÚ</div>
                 <div class="section-row">
                     <span>Điều kiện giao xe</span>
-                    <span class="editable" id="delivery-condition">Đu kiện trong vòng 7 ngày từ khi ký hợp đồng</span>
+                    <span class="editable" id="delivery-condition">Đủ điều kiện trong vòng 7 ngày từ khi ký hợp đồng</span>
                 </div>
                 <div class="section-row">
                     <span>Thời hạn hiệu lực báo giá</span>
-                    <span class="editable" id="quote-validity">Đến ngày 16/2025</span>
+                    <span class="editable" id="quote-validity">Đến ngày 16/06/2025</span>
                 </div>
             </div>
             <div class="section">
@@ -358,7 +359,7 @@
                 registrationPlace: 'CỤC QUẢN LÝ PHƯƠNG TIỆN',
                 registrationDate: '15-05-2021',
                 entryDate: '20-04-2025',
-                exitDate: '20-05-2025',
+exitDate: '20-05-2025',
                 status: 'Mới',
                 price: '350000000'
             };
@@ -403,7 +404,65 @@
 
             // Xử lý nút Đóng
             document.querySelector('.close-btn').addEventListener('click', () => {
-                window.location.href = 'bao-gia-detail.html';
+window.location.href = 'bao-gia-detail.html';
+            });
+
+            // Xử lý nút Xuất PDF và gửi EMAIL
+            document.querySelector('.pdf-email-btn').addEventListener('click', () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Thiết lập font chữ hỗ trợ tiếng Việt (dùng font mặc định, nhưng cần chú ý ký tự)
+                doc.setFont("helvetica");
+                doc.setFontSize(12);
+
+                // Tiêu đề
+                doc.setFontSize(20);
+                doc.text("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", 105, 20, { align: "center" });
+                doc.setFontSize(16);
+                doc.text("Độc lập - Tự do - Hạnh phúc", 105, 25, { align: "center" });
+                doc.text("HỢP ĐỒNG MUA BÁN XE", 105, 35, { align: "center" });
+
+                // Hôm nay, ngày ... tháng ... năm ..., tại ...
+                doc.setFontSize(12);
+                doc.text(`Hôm nay, ngày ${new Date().getDate()} tháng ${new Date().getMonth() + 1} năm ${new Date().getFullYear()}, tại ${document.getElementById('contract-location').textContent}`, 20, 50);
+
+                // BÊN A (BÊN BÁN)
+                doc.text("BÊN A (BÊN BÁN):", 20, 60);
+                doc.text(`Ông (Bà): ${document.getElementById('party-a-name').textContent}`, 20, 70);
+                doc.text("Nguyên quán: .............................................", 20, 80);
+                doc.text("CMND số: .............................................", 20, 90);
+                doc.text("Hộ khẩu thường trú tại: .............................................", 20, 100);
+
+                // BÊN B (BÊN MUA)
+                doc.text("BÊN B (BÊN MUA):", 20, 110);
+                doc.text(`Ông (Bà): ${document.getElementById('party-b-name').textContent}`, 20, 120);
+                doc.text("Nguyên quán: .............................................", 20, 130);
+                doc.text("CMND số: .............................................", 20, 140);
+                doc.text("Hộ khẩu thường trú tại: .............................................", 20, 150);
+
+                // ĐIỀU 1: ĐIỀU KIỆN XE MUA BÁN
+                doc.text("ĐIỀU 1: ĐIỀU KIỆN XE MUA BÁN", 20, 160);
+                doc.text(`Bên A là chủ sở hữu chiếc xe máy/mô tô nhãn hiệu: ${document.getElementById('car-brand').textContent} ${document.getElementById('car-model').textContent}`, 20, 170);
+                doc.text("Loại xe: .............................................", 20, 180);
+                doc.text("Số khung: .............................................", 20, 190);
+                doc.text("Số máy: .............................................", 20, 200);
+                doc.text("Màu xe: .............................................", 20, 210);
+doc.text("Biển số: .............................................", 20, 220);
+
+                // ĐIỀU 2: SỰ THOẢ THUẬN MUA BÁN
+                doc.text("ĐIỀU 2: SỰ THOẢ THUẬN MUA BÁN", 20, 230);
+                doc.text("2.1. Bên A đồng ý bán và Bên B đồng ý mua chiếc xe nêu trên với giá: .............................................", 20, 240);
+                doc.text("2.2. Bên A đã bàn giao xe và các giấy tờ liên quan cho Bên B.", 20, 250);
+
+                // Lưu PDF
+                doc.save('HopDongMuaBanXe.pdf');
+
+                // Giả lập gửi email
+                alert('PDF đã được tạo và giả lập gửi email đến ' + document.getElementById('party-a-email').textContent);
+
+                // Chuyển hướng đến hopdong.html
+                window.location.href = 'hopdong.html';
             });
         });
     </script>
