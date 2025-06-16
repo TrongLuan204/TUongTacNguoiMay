@@ -215,6 +215,43 @@
         .date-picker.hidden {
             display: none;
         }
+        #additionalOptionsContainer {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+        }
+        #optionsTable td {
+            vertical-align: middle;
+        }
+        #notes {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        #createQuote, #closeOptions {
+            padding: 10px 20px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        #createQuote:hover, #closeOptions:hover {
+            background-color: #704b46;
+        }
     </style>
 </head>
 <body>
@@ -326,6 +363,27 @@
             <button id="additionalOptions">Tùy chọn bổ sung</button>
             <button id="holdCar">Giữ xe</button>
         </div>
+        <div id="additionalOptionsContainer" style="display: none;">
+            <button id="closeOptions">Đóng</button>
+            <table id="optionsTable">
+                <thead>
+                    <tr>
+                        <th>Tên tùy chọn</th>
+                        <th>Mô tả</th>
+                        <th>Giá</th>
+                        <th>Chọn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added here dynamically -->
+                </tbody>
+            </table>
+            <div>
+                <label for="notes">Ghi chú:</label>
+                <textarea id="notes" rows="4" cols="50"></textarea>
+            </div>
+            <button id="createQuote">Tạo báo giá</button>
+        </div>
         <div class="hold-info" id="holdInfo">
             <p>Xe đã giữ trong 5 phút</p>
             <button id="undoHold">Hoàn tác</button>
@@ -340,6 +398,65 @@
             const additionalOptionsBtn = document.getElementById('additionalOptions');
             const holdCarBtn = document.getElementById('holdCar');
             const undoHoldBtn = document.getElementById('undoHold');
+            const closeOptionsBtn = document.getElementById('closeOptions');
+            const createQuoteBtn = document.getElementById('createQuote');
+
+            // Dữ liệu tùy chọn bổ sung
+            const additionalOptions = [
+                {
+                    name: "Gói nội thất cao cấp",
+                    description: "Nâng cấp nội thất với da cao cấp và các chi tiết mạ crôm",
+                    price: 10000000,
+                    inStock: true
+                },
+                {
+                    name: "Bảo hiểm toàn diện",
+                    description: "Bảo hiểm cho xe trong 1 năm",
+                    price: 5000000,
+                    inStock: true
+                },
+                {
+                    name: "Hệ thống âm thanh cao cấp",
+                    description: "Hệ thống âm thanh 10 loa với chất lượng âm thanh tuyệt vời",
+                    price: 8000000,
+                    inStock: false
+                },
+                {
+                    name: "Gói an toàn nâng cao",
+                    description: "Bao gồm các tính năng an toàn như cảnh báo va chạm, hỗ trợ đỗ xe",
+                    price: 12000000,
+                    inStock: true
+                }
+            ];
+
+            // Hàm hiển thị tùy chọn bổ sung trong bảng
+            function renderAdditionalOptions() {
+                const tbody = document.querySelector('#optionsTable tbody');
+                tbody.innerHTML = '';
+                additionalOptions.forEach(option => {
+                    const row = document.createElement('tr');
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = option.name;
+                    row.appendChild(nameCell);
+                    const descCell = document.createElement('td');
+                    descCell.textContent = option.description;
+                    row.appendChild(descCell);
+                    const priceCell = document.createElement('td');
+                    priceCell.textContent = option.price.toLocaleString() + ' VND';
+                    row.appendChild(priceCell);
+                    const selectCell = document.createElement('td');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.dataset.optionName = option.name;
+                    if (!option.inStock) {
+                        checkbox.disabled = true;
+                    }
+                    selectCell.appendChild(checkbox);
+                    row.appendChild(selectCell);
+                    tbody.appendChild(row);
+                });
+                document.getElementById('additionalOptionsContainer').style.display = 'block';
+            }
 
             // Ẩn nút mặc định
             buttonContainer.style.display = 'none';
@@ -361,12 +478,12 @@
                         model: model,
                         brand: brand,
                         color: color,
-                        license: '', // Có thể lấy từ chi tiết nếu đã điền
-                        registration: '51A-123-45', // Giá trị mặc định
+                        license: '',
+                        registration: '51A-123-45',
                         registrationPlace: 'CỤC QUẢN LÝ PHƯƠNG TIỆN',
-                        registrationDate: '15-05-2021', // Giá trị mặc định
-                        entryDate: '', // Sẽ lấy từ chi tiết nếu có
-                        exitDate: '', // Sẽ lấy từ chi tiết nếu có
+                        registrationDate: '15-05-2021',
+                        entryDate: '',
+                        exitDate: '',
                         status: status,
                         price: price
                     };
@@ -396,7 +513,7 @@
                                     <img src="" alt="Car Rear">
                                 </div>
                                 <div class="image-section">
-                                    <h4>PHÁI</h4>
+                                    <h4>PHẢI</h4>
                                     <img src="" alt="Car Right">
                                 </div>
                             </div>
@@ -572,8 +689,29 @@
 
             // Xử lý nút "Tùy chọn bổ sung"
             additionalOptionsBtn.addEventListener('click', () => {
-                window.location.href = 'taohopdong.html';
+                renderAdditionalOptions();
             });
+
+            // Xử lý nút "Đóng"
+            closeOptionsBtn.addEventListener('click', () => {
+                document.getElementById('additionalOptionsContainer').style.display = 'none';
+            });
+
+            // Xử lý nút "Tạo báo giá"
+            createQuoteBtn.addEventListener('click', () => {
+                const selectedCheckboxes = document.querySelectorAll('#optionsTable input[type="checkbox"]:checked');
+                const selectedOptions = Array.from(selectedCheckboxes).map(cb => cb.dataset.optionName);
+                const notes = document.getElementById('notes').value;
+                const carData = JSON.parse(localStorage.getItem('selectedCar'));
+                const quoteData = {
+                    car: carData,
+                    options: selectedOptions,
+                    notes: notes
+                };
+                localStorage.setItem('quoteData', JSON.stringify(quoteData));
+                window.location.href = 'taobaogia.html';
+            });
+
             // Thêm highlight cho hàng được chọn
             rows.forEach(row => {
                 row.addEventListener('click', () => {

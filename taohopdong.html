@@ -103,22 +103,6 @@
             font-size: 16px;
             color: #333;
         }
-        .package-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
-        }
-        .package-row .remove-btn {
-            background-color: #8b5e57;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            padding: 2px 5px;
-            cursor: pointer;
-        }
-        .package-row .remove-btn:hover {
-            background-color: #704b46;
-        }
         .total-row {
             font-weight: bold;
             border-top: 1px solid #ccc;
@@ -303,26 +287,6 @@
             </div>
             <div class="section">
                 <div class="section-header">THÔNG TIN ĐƠN HÀNG</div>
-                <div class="package-row" data-index="0">
-                    <span>Gói thảm cao cấp</span>
-                    <span class="editable" contenteditable="true" data-field="package-price">20.000.000 đ</span>
-                    <button class="remove-btn">Xóa</button>
-                </div>
-                <div class="package-row" data-index="1">
-                    <span>Gói bảo da cao cấp</span>
-                    <span class="editable" contenteditable="true" data-field="package-price">20.000.000 đ</span>
-                    <button class="remove-btn">Xóa</button>
-                </div>
-                <div class="package-row" data-index="2">
-                    <span>Gói âm thanh Bose</span>
-                    <span class="editable" contenteditable="true" data-field="package-price">20.000.000 đ</span>
-                    <button class="remove-btn">Xóa</button>
-                </div>
-                <div class="package-row" data-index="3">
-                    <span>Gói bảo vệ thân vỏ</span>
-                    <span class="editable" contenteditable="true" data-field="package-price">20.000.000 đ</span>
-                    <button class="remove-btn">Xóa</button>
-                </div>
                 <div class="section-row total-row">
                     <span>Tổng giá phụ kiện</span>
                     <span id="total-accessories">80.000.000 đ</span>
@@ -416,13 +380,7 @@
 
             // Tính toán giá phụ kiện và tổng thanh toán
             function updateTotals() {
-                const packages = document.querySelectorAll('.package-row');
-                let totalAccessories = 0;
-                packages.forEach(pkg => {
-                    const price = parseFloat(pkg.querySelector('.editable').textContent.replace(/[^0-9]/g, '')) || 0;
-                    totalAccessories += price;
-                });
-                document.getElementById('total-accessories').textContent = `${totalAccessories.toLocaleString()} đ`;
+                const totalAccessories = parseFloat(document.getElementById('total-accessories').textContent.replace(/[^0-9]/g, '')) || 0;
                 document.getElementById('accessories-price').textContent = `${totalAccessories.toLocaleString()} đ`;
 
                 const basePrice = parseFloat(selectedCar.price.replace(/[^0-9]/g, '')) || 0;
@@ -436,19 +394,6 @@
                 document.getElementById('total-payment').textContent = `${totalPayment.toLocaleString()} đ`;
             }
 
-            // Xử lý xóa gói bổ sung
-            document.querySelectorAll('.remove-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    btn.parentElement.remove();
-                    updateTotals();
-                });
-            });
-
-            // Cập nhật tổng khi chỉnh sửa giá gói
-            document.querySelectorAll('.editable[data-field="package-price"]').forEach(el => {
-                el.addEventListener('input', updateTotals);
-            });
-
             // Cập nhật tổng khi chỉnh sửa chiết khấu hoặc phí đăng ký
             document.getElementById('discount').addEventListener('input', updateTotals);
             document.getElementById('registration-fee').addEventListener('input', updateTotals);
@@ -458,7 +403,7 @@
 
             // Xử lý nút Đóng
             document.querySelector('.close-btn').addEventListener('click', () => {
-                window.location.href = 'index.html';
+                window.location.href = 'bao-gia-detail.html';
             });
         });
     </script>
