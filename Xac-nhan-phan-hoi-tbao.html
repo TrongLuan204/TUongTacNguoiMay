@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Nhận Và Phản Hồi Thông Báo Khẩn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #f0e6e1;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #4a2c2a;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+            background-color: #4a2c2a;
+        }
+        .sidebar ul li:hover {
+            background-color: #4a2c2a;
+        }
+        .sidebar ul li.active {
+            background-color: #4a2c2a;
+        }
+        .sidebar ul li button {
+            background: none;
+            border: none;
+            color: #fff;
+            width: 100%;
+            text-align: left;
+            padding: 0;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .sidebar ul li button:hover {
+            background-color: #704030;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #f0e6e1;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4a2c2a;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 150px;
+        }
+        .search-bar button {
+            padding: 8px 15px;
+            background-color: #4a2c2a;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #704030;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #d3d3d3;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+        th {
+            background-color: #4a2c2a;
+            color: #fff;
+        }
+        td {
+            background-color: #fff;
+        }
+        th:nth-child(1), td:nth-child(1) { width: 16.666%; }
+        th:nth-child(2), td:nth-child(2) { width: 16.666%; }
+        th:nth-child(3), td:nth-child(3) { width: 16.666%; }
+        th:nth-child(4), td:nth-child(4) { width: 16.666%; }
+        th:nth-child(5), td:nth-child(5) { width: 16.666%; }
+        th:nth-child(6), td:nth-child(6) { width: 8.333%; }
+        th:nth-child(7), td:nth-child(7) { width: 8.333%; }
+        th:nth-child(8), td:nth-child(8) { width: 8.333%; }
+        .status-bars {
+            display: flex;
+            gap: 5px;
+        }
+        .status-bar {
+            height: 10px;
+            width: 20px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .red { background: red; }
+        .yellow { background: yellow; }
+        .green { background: green; }
+        .gray { background: #ccc; }
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        .actions button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .actions .view-btn { background-color: #808080; color: #fff; }
+        .actions .cancel-btn { background-color: #ff4500; color: #fff; }
+        .actions .confirm-btn { background-color: #4a2c2a; color: #fff; }
+        .actions button:hover {
+            opacity: 0.8;
+        }
+        .form-container {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 1000;
+            width: 300px;
+        }
+        .feedback-modal .form-group {
+            margin-bottom: 15px;
+        }
+        .feedback-modal .form-actions {
+            justify-content: flex-end;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+    </style>
+    <script>
+        function showForm(row) {
+            const form = document.querySelector('.form-container');
+            const id = row.cells[0].textContent;
+            const name = row.cells[1].textContent;
+            const address = "Số nhà 16, ngách 49/40 Trần Cung"; // Default address
+            const time = row.cells[3].textContent;
+            const email = row.cells[4].textContent;
+
+            document.getElementById('form-id').value = id;
+            document.getElementById('form-name').value = name;
+            document.getElementById('form-address').value = address;
+            document.getElementById('form-time').value = time;
+            document.getElementById('form-email').value = email;
+            form.style.display = 'block';
+        }
+
+        function showFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function cancelFeedback() {
+            document.getElementById('feedbackModal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('feedbackInput').value = '';
+        }
+
+        function updateFeedback() {
+            const feedback = document.getElementById('feedbackInput').value;
+            if (feedback) {
+                alert('Cập nhật phản hồi thành công');
+                document.getElementById('feedbackModal').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('feedbackInput').value = '';
+            } else {
+                alert('Vui lòng nhập phản hồi');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+            <li><button onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</button></li>
+            <li><button onclick="window.location.href='quan-ly-lich-hen.html'">QUẢN LÝ LỊCH HẸN</button></li>
+            <li><button onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</button></li>
+            <li><button onclick="window.location.href='quan-ly-lich-hen.html'">QUẢN LÝ LỊCH HẸN</button></li>
+            <li class="active"><button onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</button></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1>Xác Nhận Và Phản Hồi Thông Báo Khẩn</h1>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="STT" style="width: 100px;">
+            <input type="text" placeholder="Tên" style="width: 150px;">
+            <input type="text" placeholder="Địa chỉ" style="width: 150px;">
+            <input type="text" placeholder="Thời gian" style="width: 150px;">
+            <input type="text" placeholder="Email" style="width: 200px;">
+            <button>Tìm kiếm</button>
+            <button>Xóa tìm kiếm</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Thời gian</th>
+                    <th>Email</th>
+                    <th>Trạng thái</th>
+                    <th>Xem chi tiết</th>
+                    <th>Hủy</th>
+                    <th>Xác nhận</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Nguyễn Tiến Đạt</td>
+                    <td>Số nhà 16, ngách 49/40 Trần Cung</td>
+                    <td>14/06/2025 - 10:00 PM</td>
+                    <td>ntdat241004@gmail.com</td>
+                    <td>
+                        <div class="status-bars">
+                            <div class="status-bar red"></div>
+                            <div class="status-bar gray"></div>
+                            <div class="status-bar gray"></div>
+                        </div> Đang xử lý
+                    </td>
+                    <td><button class="view-btn" onclick="showForm(this.parentNode.parentNode)">Xem chi tiết</button></td>
+                    <td><button class="cancel-btn" onclick="cancelForm()">Hủy</button></td>
+                    <td><button class="confirm-btn" onclick="showFeedbackModal()">Xác nhận</button></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Nguyễn Tiến Đạt</td>
+                    <td>Số nhà 16, ngách 49/40 Trần Cung</td>
+                    <td>14/06/2025 - 10:00 PM</td>
+                    <td>ntdat241004@gmail.com</td>
+                    <td>
+                        <div class="status-bars">
+                            <div class="status-bar yellow"></div>
+                            <div class="status-bar yellow"></div>
+                            <div class="status-bar gray"></div>
+                        </div> Chờ duyệt
+                    </td>
+                    <td><button class="view-btn" onclick="showForm(this.parentNode.parentNode)">Xem chi tiết</button></td>
+                    <td><button class="cancel-btn" onclick="cancelForm()">Hủy</button></td>
+                    <td><button class="confirm-btn" onclick="showFeedbackModal()">Xác nhận</button></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Nguyễn Tiến Đạt</td>
+                    <td>Số nhà 16, ngách 49/40 Trần Cung</td>
+                    <td>14/06/2025 - 10:00 PM</td>
+                    <td>ntdat241004@gmail.com</td>
+                    <td>
+                        <div class="status-bars">
+                            <div class="status-bar yellow"></div>
+                            <div class="status-bar yellow"></div>
+                            <div class="status-bar gray"></div>
+                        </div> Chờ duyệt
+                    </td>
+                    <td><button class="view-btn" onclick="showForm(this.parentNode.parentNode)">Xem chi tiết</button></td>
+                    <td><button class="cancel-btn" onclick="cancelForm()">Hủy</button></td>
+                    <td><button class="confirm-btn" onclick="showFeedbackModal()">Xác nhận</button></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Nguyễn Tiến Đạt</td>
+                    <td>Số nhà 16, ngách 49/40 Trần Cung</td>
+                    <td>14/06/2025 - 10:00 PM</td>
+                    <td>ntdat241004@gmail.com</td>
+                    <td>
+                        <div class="status-bars">
+                            <div class="status-bar red"></div>
+                            <div class="status-bar gray"></div>
+                            <div class="status-bar gray"></div>
+                        </div> Đang xử lý
+                    </td>
+                    <td><button class="view-btn" onclick="showForm(this.parentNode.parentNode)">Xem chi tiết</button></td>
+                    <td><button class="cancel-btn" onclick="cancelForm()">Hủy</button></td>
+                    <td><button class="confirm-btn" onclick="showFeedbackModal()">Xác nhận</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-container">
+            <div class="form-group">
+                <label>ID:</label>
+                <input type="text" id="form-id" readonly>
+            </div>
+            <div class="form-group">
+                <label>Tên:</label>
+                <input type="text" id="form-name" readonly>
+            </div>
+            <div class="form-group">
+                <label>Địa chỉ:</label>
+                <input type="text" id="form-address" readonly>
+            </div>
+            <div class="form-group">
+                <label>Thời gian:</label>
+                <input type="text" id="form-time" readonly>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="text" id="form-email" readonly>
+            </div>
+        </div>
+        <div id="overlay" class="overlay"></div>
+        <div id="feedbackModal" class="feedback-modal">
+            <div class="form-group">
+                <label>Phản hồi ban đầu:</label>
+                <textarea id="feedbackInput" rows="4"></textarea>
+            </div>
+            <div class="form-actions">
+                <button onclick="cancelFeedback()">Hủy</button>
+                <button onclick="updateFeedback()">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

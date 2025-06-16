@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Thông Báo Khẩn</title>
+    <title>Tiếp Nhận Thông Báo Khẩn</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -77,23 +77,46 @@
             margin: 0;
             font-size: 24px;
         }
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
             margin-bottom: 20px;
         }
-        .nav-buttons button {
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .form-actions button {
             padding: 10px 20px;
             background-color: #4a2c2a;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Archivo Narrow', sans-serif;
             color: #fff;
+            cursor: pointer;
         }
-        .nav-buttons button:hover {
-            background-color: #4a2c2a;
+        .form-actions button:hover {
+            background-color: #704030;
         }
         table {
             width: 100%;
@@ -114,13 +137,12 @@
         td {
             background-color: #fff;
         }
-        th:nth-child(1), td:nth-child(1) { width: 5%; } /* STT */
-        th:nth-child(2), td:nth-child(2) { width: 15%; } /* Tên */
-        th:nth-child(3), td:nth-child(3) { width: 15%; } /* Mã sự cố */
-        th:nth-child(4), td:nth-child(4) { width: 20%; } /* Thời gian */
-        th:nth-child(5), td:nth-child(5) { width: 20%; } /* Email */
-        th:nth-child(6), td:nth-child(6) { width: 10%; } /* Trạng thái */
-        th:nth-child(7), td:nth-child(7) { width: 15%; } /* Thao tác */
+        th:nth-child(1), td:nth-child(1) { width: 16.666%; }
+        th:nth-child(2), td:nth-child(2) { width: 16.666%; }
+        th:nth-child(3), td:nth-child(3) { width: 16.666%; }
+        th:nth-child(4), td:nth-child(4) { width: 16.666%; }
+        th:nth-child(5), td:nth-child(5) { width: 16.666%; }
+        th:nth-child(6), td:nth-child(6) { width: 16.666%; }
         .status-bars {
             display: flex;
             gap: 5px;
@@ -151,6 +173,14 @@
             background-color: #4a2c2a;
         }
     </style>
+    <script>
+        function showSuccessPopup() {
+            alert("Tiếp nhận thành công !");
+        }
+        function showCancelPopup() {
+            alert("Hủy thông báo thành công !");
+        }
+    </script>
 </head>
 <body>
     <div class="sidebar">
@@ -162,28 +192,60 @@
             <li><button onclick="window.location.href='quan-ly-lich-hen.html'">QUẢN LÝ LỊCH HẸN</button></li>
             <li><button onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</button></li>
             <li><button onclick="window.location.href='quan-ly-lich-hen.html'">QUẢN LÝ LỊCH HẸN</button></li>
-            <li class="active"><button onclick="window.location.href='quan-ly-thong-bao-khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</button></li>
+            <li class="active"><button onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</button></li>
         </ul>
     </div>
     <div class="content">
         <div class="header">
-            <h1>QUẢN LÝ THÔNG BÁO KHẨN</h1>
+            <h1>Tiếp Nhận Thông Báo Khẩn</h1>
         </div>
-        <div class="nav-buttons">
-            <button onclick="window.location.href='xac-nhan-phan-hoi-tbao.html'">Xác nhận - phản hồi</button>
-            <button>Thống kê thông báo khẩn</button>
-            <button onclick="window.location.href='tiep-nhan-tbao-khan.html'">Tiếp nhận thông báo khẩn</button>
+        <div class="form-container">
+            <div class="form-group">
+                <label>ID:</label>
+                <input type="text" value="01" readonly>
+            </div>
+            <div class="form-group">
+                <label>Thông tin người gửi:</label>
+                <input type="text" value="Nguyễn Tiến Đạt" readonly>
+            </div>
+            <div class="form-group">
+                <label></label>
+                <input type="text" value="ntdat241004@gmail.com" readonly>
+            </div>
+            <div class="form-group">
+                <label></label>
+                <input type="text" value="Số nhà 16, ngách 49/40 Trần Cung" readonly>
+            </div>
+            <div class="form-group">
+                <label>Thời gian:</label>
+                <input type="datetime-local">
+            </div>
+            <div class="form-group">
+                <label>Mô tả lỗi:</label>
+                <input type="text">
+            </div>
+            <div class="form-group">
+                <label>Trạng thái:</label>
+                <select>
+                    <option value="cao">Cao</option>
+                    <option value="trungbinh">Trung bình</option>
+                    <option value="thap">Thấp</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button onclick="showSuccessPopup()">Xác nhận</button>
+                <button onclick="showCancelPopup()">Hủy</button>
+            </div>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>STT</th>
                     <th>Tên</th>
-                    <th>Mã sự cố</th>
+                    <th>Mã số ID</th>
                     <th>Thời gian</th>
                     <th>Email</th>
                     <th>Trạng thái</th>
-                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -200,11 +262,6 @@
                             <div class="status-bar gray"></div>
                         </div> Đang xử lý
                     </td>
-                    <td class="actions">
-                        <button>Xem chi tiết</button>
-                        <button>Liên hệ</button>
-                        <button>Xóa</button>
-                    </td>
                 </tr>
                 <tr>
                     <td>2</td>
@@ -218,11 +275,6 @@
                             <div class="status-bar yellow"></div>
                             <div class="status-bar gray"></div>
                         </div> Chờ duyệt
-                    </td>
-                    <td class="actions">
-                        <button>Xem chi tiết</button>
-                        <button>Liên hệ</button>
-                        <button>Xóa</button>
                     </td>
                 </tr>
                 <tr>
@@ -238,11 +290,6 @@
                             <div class="status-bar green"></div>
                         </div> Hoàn thành
                     </td>
-                    <td class="actions">
-                        <button>Xem chi tiết</button>
-                        <button>Liên hệ</button>
-                        <button>Xóa</button>
-                    </td>
                 </tr>
                 <tr>
                     <td>4</td>
@@ -257,11 +304,6 @@
                             <div class="status-bar gray"></div>
                         </div> Chờ duyệt
                     </td>
-                    <td class="actions">
-                        <button>Xem chi tiết</button>
-                        <button>Liên hệ</button>
-                        <button>Xóa</button>
-                    </td>
                 </tr>
                 <tr>
                     <td>5</td>
@@ -275,30 +317,6 @@
                             <div class="status-bar green"></div>
                             <div class="status-bar green"></div>
                         </div> Hoàn thành
-                    </td>
-                    <td class="actions">
-                        <button>Xem chi tiết</button>
-                        <button>Liên hệ</button>
-                        <button>Xóa</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Nguyễn Tiến Đạt</td>
-                    <td>001204002</td>
-                    <td>14/06/2025 - 10:00 PM</td>
-                    <td>ntdat241004@gmail.com</td>
-                    <td>
-                        <div class="status-bars">
-                            <div class="status-bar red"></div>
-                            <div class="status-bar gray"></div>
-                            <div class="status-bar gray"></div>
-                        </div> Đang xử lý
-                    </td>
-                    <td class="actions">
-                        <button>Xem chi tiết</button>
-                        <button>Liên hệ</button>
-                        <button>Xóa</button>
                     </td>
                 </tr>
             </tbody>
