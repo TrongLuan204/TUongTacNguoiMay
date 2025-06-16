@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Lịch Hẹn - Carly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            background-color: #633d38;
+        }
+        .sidebar ul li.active {
+            background-color: #8b5e57;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .appointment-header {
+            font-size: 2.5em;
+            color: #4a2c2a;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .appointment-form {
+            background-color: #d3d3d3;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .appointment-form .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .appointment-form input,
+        .appointment-form select {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            position: relative;
+        }
+        .appointment-form input[type="date"] {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            cursor: pointer;
+        }
+        .appointment-form .custom-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .appointment-form .custom-dropdown select {
+            width: 100%;
+            padding-right: 30px;
+        }
+        .appointment-form .custom-dropdown-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .appointment-form .custom-dropdown-options div {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .appointment-form .custom-dropdown-options div:hover {
+            background-color: #ced4da;
+        }
+        .appointment-form .custom-dropdown:hover .custom-dropdown-options,
+        .appointment-form .custom-dropdown:focus-within .custom-dropdown-options {
+            display: block;
+        }
+        .notes-section {
+            background-color: #d3d3d3;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .notes-section textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            resize: none;
+        }
+        .time-selection {
+            background-color: #d3d3d3;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .time-selection h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .time-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .time-slot {
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+        }
+        .time-slot.available {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .time-slot.unavailable {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .alert-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            z-index: 1000;
+        }
+        .alert-box.show {
+            display: block;
+        }
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+        }
+        .actions .confirm {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .actions .confirm:hover {
+            background-color: #633d38;
+        }
+        .actions .cancel {
+            background-color: #fff;
+            color: #8b5e57;
+            border: 1px solid #8b5e57;
+        }
+        .actions .cancel:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+             <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</li>
+            <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
+            <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
+            <li onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1 class="appointment-header">TẠO LỊCH HẸN</h1>
+        <div class="appointment-form">
+            <div class="form-row">
+                <input type="text" value="....." readonly>
+                <select>
+                    <option value="">Tìm kiếm</option>
+                </select>
+                <input type="date" placeholder="Chọn ngày hẹn">
+                <div class="custom-dropdown">
+                    <select>
+                        <option value="">Lợi ích hẹn</option>
+                    </select>
+                    <div class="custom-dropdown-options">
+                        <div>Bảo dưỡng định kỳ</div>
+                        <div>Sửa chữa</div>
+                        <div>Mua phụ tùng</div>
+                        <div>Bảo hiểm</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notes-section">
+            <textarea placeholder="Vi dụ: Kiểm tra phanh trụđc">Vi dụ: Kiểm tra phanh trụđc</textarea>
+        </div>
+        <div class="time-selection">
+            <h3>CHỌN KHUNG THỜI GIAN</h3>
+            <div class="time-slots">
+                <div class="time-slot available">8:00</div>
+                <div class="time-slot available">9:00</div>
+                <div class="time-slot unavailable">10:00</div>
+                <div class="time-slot available">11:00</div>
+                <div class="time-slot available">12:00</div>
+                <div class="time-slot unavailable">13:00</div>
+                <div class="time-slot unavailable">14:00</div>
+                <div class="time-slot available">15:00</div>
+                <div class="time-slot available">16:00</div>
+                <div class="time-slot unavailable">18:00</div>
+                <div class="time-slot available">18:00</div>
+                <div class="time-slot available">18:30</div>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="confirm">XÁC NHẬN</button>
+            <button class="cancel" onclick="window.location.href='quanlilichhen.html'">HỦY</button>
+        </div>
+    </div>
+    <div class="alert-box" id="unavailableAlert">
+        <i class="fas fa-info-circle"></i> Khung giờ đã được đặt
+    </div>
+    <div class="alert-box" id="successAlert">
+        <i class="fas fa-check"></i> Lịch hẹn đã được lưu
+    </div>
+    <script>
+        document.querySelectorAll('.custom-dropdown-options div').forEach(option => {
+            option.addEventListener('click', function() {
+                const select = this.parentElement.previousElementSibling;
+                select.value = this.textContent;
+                this.parentElement.style.display = 'none';
+            });
+        });
+
+        const unavailableSlots = document.querySelectorAll('.time-slot.unavailable');
+        const unavailableAlert = document.getElementById('unavailableAlert');
+        const successAlert = document.getElementById('successAlert');
+        const confirmButton = document.querySelector('.confirm');
+
+        unavailableSlots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                unavailableAlert.classList.add('show');
+                setTimeout(() => {
+                    unavailableAlert.classList.remove('show');
+                }, 2000);
+            });
+        });
+
+        confirmButton.addEventListener('click', function() {
+            successAlert.classList.add('show');
+            setTimeout(() => {
+                successAlert.classList.remove('show');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Nhận Và Cập Nhật Lịch Hẹn - Carly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+            background-color: #633d38;
+            margin-bottom: 2px;
+        }
+        .sidebar ul li:hover {
+            background-color: #8b5e57;
+        }
+        .sidebar ul li.active {
+            background-color: #8b5e57;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header .title {
+            font-size: 2.5em;
+            color: #4a2c2a;
+            text-align: center;
+            flex-grow: 1;
+        }
+        .header .user {
+            display: flex;
+            align-items: center;
+            color: #8b5e57;
+        }
+        .header .user img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex-grow: 1;
+        }
+        .search-bar select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .appointment-details {
+            background-color: #d3d3d3;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .appointment-details .info {
+            flex: 1;
+        }
+        .appointment-details .info p {
+            margin: 5px 0;
+        }
+        .appointment-details .info .custom-dropdown {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .appointment-details .info .custom-dropdown select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+            cursor: pointer;
+        }
+        .appointment-details .info .custom-dropdown-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .appointment-details .info .custom-dropdown-options div {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .appointment-details .info .custom-dropdown-options div:hover {
+            background-color: #f5f5f5;
+        }
+        .appointment-details .info .custom-dropdown:hover .custom-dropdown-options,
+        .appointment-details .info .custom-dropdown:focus-within .custom-dropdown-options {
+            display: block;
+        }
+        .appointment-details .car-image img {
+            width: 200px;
+            height: auto;
+        }
+        .notes-section {
+            background-color: #d3d3d3;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .notes-section textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            resize: none;
+        }
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+        }
+        .actions .save {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .actions .save:hover {
+            background-color: #633d38;
+        }
+        .actions .cancel {
+            background-color: #fff;
+            color: #8b5e57;
+            border: 1px solid #8b5e57;
+        }
+        .actions .cancel:hover {
+            background-color: #f5f5f5;
+        }
+        .alert-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .alert-box.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+            <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</li>
+            <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
+            <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
+            <li onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1 class="title">XÁC NHẬN VÀ CẬP NHẬT LỊCH HẸN</h1>
+            <div class="user">
+                <img src="https://via.placeholder.com/30" alt="User">
+                <span>QUẢN LÝ SHOWROOM</span>
+            </div>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Tìm kiếm khách hàng...">
+            <input type="date" value="2025-06-27">
+            <select>
+                <option value="">Chọn bộ lọc</option>
+            </select>
+        </div>
+        <div class="appointment-details">
+            <div class="info">
+                <p><strong>Thông tin lịch hẹn:</strong></p>
+                <p>Nguyễn Văn A, 10:00, 27/05/2025, Bảo dưỡng định kỳ</p>
+                <p><strong>Cập nhật trạng thái:</strong></p>
+                <div class="custom-dropdown">
+                    <select id="statusDropdown">
+                        <option value="">Chọn trạng thái</option>
+                    </select>
+                    <div class="custom-dropdown-options">
+                        <div data-value="pending">Đang chờ</div>
+                        <div data-value="completed">Đã hoàn thành</div>
+                        <div data-value="not_completed">Chưa hoàn thành</div>
+                    </div>
+                </div>
+            </div>
+            <div class="car-image">
+                <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494690954_979529017422518_6399698188603564204_n.png?stp=dst-png_p526x395&_nc_cat=101&ccb=1-7&_nc_sid=0024fc&_nc_eui2=AeESAvlsP4Y--SoqerHFpQzbXjCmjbQPXxFeMKaNtA9fEf_wsCd1kvZPQShIAGhOBLnKQhS4cNFTv5FMAzQY3J-8&_nc_ohc=Q8Aprw-dcI4Q7kNvwGJb0f9&_nc_oc=AdnuxREnL-NQ-7ECsFy4mSyEh5yiaMZTcMuJsPTLIEtqLqEyYEw6SldGaCB13PQu06A&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gG4trP7_-trJN5Vd84O8bY1rW82zgP8BxRpSj1Lllg7RQ&oe=6877709D" alt="Car Image">
+            </div>
+        </div>
+        <div class="notes-section">
+            <p><strong>Ghi chú:</strong></p>
+            <textarea placeholder="VD: Thay dầu máy, khách hàng hài lòng..."></textarea>
+        </div>
+        <div class="actions">
+            <button class="save">Lưu</button>
+            <button class="cancel" onclick="window.location.href='chinhsualichhen.html'">Hủy</button>
+        </div>
+    </div>
+    <div class="alert-box" id="successAlert">
+        <i class="fas fa-check"></i> Lưu Thành Công
+    </div>
+    <script>
+        const statusDropdown = document.getElementById('statusDropdown');
+        const dropdownOptions = document.querySelector('.custom-dropdown-options');
+        const saveButton = document.querySelector('.save');
+        const successAlert = document.getElementById('successAlert');
+
+        // Dropdown functionality
+        statusDropdown.addEventListener('click', function(e) {
+            e.preventDefault();
+            dropdownOptions.style.display = dropdownOptions.style.display === 'block' ? 'none' : 'block';
+        });
+
+        dropdownOptions.querySelectorAll('div').forEach(option => {
+            option.addEventListener('click', function() {
+                statusDropdown.value = this.textContent;
+                dropdownOptions.style.display = 'none';
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!statusDropdown.contains(e.target) && !dropdownOptions.contains(e.target)) {
+                dropdownOptions.style.display = 'none';
+            }
+        });
+
+        // Save button functionality
+        saveButton.addEventListener('click', function() {
+            successAlert.classList.add('show');
+            setTimeout(() => {
+                successAlert.classList.remove('show');
+                // Optionally redirect or reset form here
+            }, 2000); // Hide after 2 seconds
+        });
+
+        // Set today's date (June 16, 2025, 04:57 PM +07)
+        document.querySelector('input[type="date"]').valueAsDate = new Date('2025-06-16');
+    </script>
+</body>
+</html>

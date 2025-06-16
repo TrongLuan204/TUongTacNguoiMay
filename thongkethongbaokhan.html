@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống Kê Thông Báo Khẩn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #f0e6e1;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #4a2c2a;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 20px;
+            cursor: pointer;
+            background-color: #4a2c2a;
+        }
+        .sidebar ul li:hover {
+            background-color: #4a2c2a;
+        }
+        .sidebar ul li.active {
+            background-color: #4a2c2a;
+        }
+        .sidebar ul li button {
+            background: none;
+            border: none;
+            color: #fff;
+            width: 100%;
+            text-align: left;
+            padding: 0;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .sidebar ul li button:hover {
+            background-color: #704030;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #f0e6e1;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4a2c2a;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons button {
+            padding: 10px 20px;
+            background-color: #4a2c2a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            color: #fff;
+        }
+        .nav-buttons button:hover {
+            background-color: #704030;
+        }
+        .filter-section {
+            background-color: #d3d3d3;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .filter-section label {
+            margin-right: 10px;
+        }
+        .filter-section input, .filter-section select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 150px;
+        }
+        .filter-section button {
+            padding: 8px 15px;
+            background-color: #4a2c2a;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .filter-section button:hover {
+            background-color: #704030;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #d3d3d3;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+        th {
+            background-color: #4a2c2a;
+            color: #fff;
+        }
+        td {
+            background-color: #fff;
+        }
+        th:nth-child(1), td:nth-child(1) { width: 25%; } /* Ngày */
+        th:nth-child(2), td:nth-child(2) { width: 25%; } /* Mức độ ưu tiên */
+        th:nth-child(3), td:nth-child(3) { width: 25%; } /* Người xử lý */
+        th:nth-child(4), td:nth-child(4) { width: 25%; } /* Số lượng */
+        .export-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .export-buttons button {
+            padding: 10px 20px;
+            background-color: #4a2c2a;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .export-buttons button:hover {
+            background-color: #704030;
+        }
+        .no-data {
+            text-align: center;
+            color: red;
+            padding: 20px;
+        }
+    </style>
+    <script>
+        function showStatistics() {
+            const fromDate = document.getElementById('from-date').value;
+            const toDate = document.getElementById('to-date').value;
+            const priority = document.getElementById('priority').value;
+            const handler = document.getElementById('handler').value;
+            const table = document.querySelector('table tbody');
+            table.innerHTML = '';
+
+            // Dummy data for demonstration
+            const data = [
+                { date: '12/06/2025', priority: 'Cao', handler: 'Nguyễn Tiến Đạt', count: 5 },
+                { date: '13/06/2025', priority: 'Trung bình', handler: 'Nguyễn Tiến Đạt', count: 3 },
+                { date: '14/06/2025', priority: 'Thấp', handler: 'Nguyễn Tiến Đạt', count: 2 }
+            ];
+
+            let filteredData = data.filter(item =>
+(!fromDate || new Date(item.date) >= new Date(fromDate)) &&
+                (!toDate || new Date(item.date) <= new Date(toDate)) &&
+                (!priority || item.priority === priority) &&
+                (!handler || item.handler === handler)
+            );
+
+            if (filteredData.length === 0) {
+                table.innerHTML = '<tr><td colspan="4" class="no-data">Không có dữ liệu thống kê.</td></tr>';
+                return;
+            }
+
+            filteredData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.date}</td>
+                    <td>${item.priority}</td>
+                    <td>${item.handler}</td>
+                    <td>${item.count}</td>
+                `;
+                table.appendChild(row);
+            });
+        }
+
+        function exportReport(format) {
+            alert(`Xuất báo cáo ${format} thành công`);
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n....68725D71" alt="Carly Logo">
+        </div>
+        <ul>
+             <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</li>
+            <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
+            <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
+            <li onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1>THỐNG KÊ THÔNG BÁO KHẨN</h1>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="window.location.href='xac-nhan-phan-hoi-tbao.html'">Xác nhận - Phản hồi</button>
+            <button onclick="window.location.href='tiep-nhan-tbao-khan.html'">Tiếp nhận thông báo khẩn</button>
+        </div>
+        <div class="filter-section">
+            <label>Từ ngày:</label><input type="date" id="from-date">
+            <label>Đến ngày:</label><input type="date" id="to-date">
+            <label>Mức độ ưu tiên:</label><select id="priority">
+                <option value="">Tất cả</option>
+<option value="Cao">Cao</option>
+                <option value="Trung bình">Trung bình</option>
+                <option value="Thấp">Thấp</option>
+            </select>
+            <label>Người xử lý:</label><select id="handler">
+                <option value="">Tất cả</option>
+                <option value="Nguyễn Tiến Đạt">Nguyễn Tiến Đạt</option>
+                <option value="Nguyễn Tiến Đạt">Nguyễn Tiến Đạt</option>
+                <option value="Nguyễn Tiến Đạt">Nguyễn Tiến Đạt</option>
+            </select>
+            <button onclick="showStatistics()">Xem thống kê</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ngày</th>
+                    <th>Mức độ ưu tiên</th>
+                    <th>Người xử lý</th>
+                    <th>Số lượng</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="export-buttons">
+            <button onclick="exportReport('Excel')">Excel</button>
+            <button onclick="exportReport('PDF')">PDF</button>
+        </div>
+    </div>
+</body>
+</html>

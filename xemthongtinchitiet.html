@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Lịch Hẹn - Carly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Archivo Narrow', Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4a2c2a;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: #fff;
+        }
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+            width: 100%;
+            background-color: #000;
+        }
+        .sidebar .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #d3d3d3;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        .search-bar input, .search-bar select {
+            border: 1px solid #ccc;
+            outline: none;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+            padding: 10px;
+            margin-right: 10px;
+            background-color: #fff; /* Nền trắng cho text field và dropdown */
+            border-radius: 4px;
+        }
+        .search-bar input {
+            flex-grow: 1;
+        }
+        .search-bar input::placeholder {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100px; /* Giới hạn chiều rộng để cắt ngắn */
+        }
+        .search-bar input:focus::placeholder {
+            content: "Tên khách hàng, số điện thoại..."; /* Hiển thị đầy đủ khi focus */
+        }
+        .search-bar select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        .add-button {
+            padding: 8px 15px; /* Giảm kích thước nút */
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 16px;
+        }
+        .add-button:hover {
+            background-color: #633d38;
+        }
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #d3d3d3;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .schedule-table th, .schedule-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+        .schedule-table th {
+            background-color: #8b5e57;
+            color: #fff;
+        }
+        .schedule-table td {
+            background-color: #fff;
+        }
+        .action-btn {
+            padding: 6px 12px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Archivo Narrow', sans-serif;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        .action-btn:hover {
+            background-color: #633d38;
+        }
+        .menu {
+    margin-top: 10px;
+}
+
+.menu-item {
+    padding: 15px 20px;
+    background-color: #7c605a;
+    border-bottom: 1px solid #5a403c;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: #5a403c;
+}
+.back-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.back-button {
+    background-color: #8b5e57;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Archivo Narrow', sans-serif;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.back-button:hover {
+    background-color: #633d38;
+}
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+        <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+    </div>
+    <div class="menu">
+        <div class="menu-item" onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</div>
+        <div class="menu-item" onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</div>
+        <div class="menu-item" onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</div>
+        <div class="menu-item" onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÝ THÔNG TIN KHÁCH HÀNG</div>
+        <div class="menu-item" onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</div>
+    </div>
+    </div>
+    <div class="content">
+        <h1>Xem chi tiết </h1>
+        <div class="header">
+            <div class="search-bar">
+                <input type="text" id="searchCustomer" placeholder="...">
+                <select id="searchManager">
+                    <option value="">Chia theo nhân viên quản lý</option>
+                    <option value="manager1">Nhân viên 1</option>
+                    <option value="manager2">Nhân viên 2</option>
+                </select>
+                <input type="date" id="searchDate">
+                <select id="searchStatus">
+                    <option value="">Trạng thái</option>
+                    <option value="pending">Đang chờ</option>
+                    <option value="completed">Hoàn thành</option>
+                </select>
+            </div>
+            
+        </div>
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên khách hàng</th>
+                    <th>Loại lịch hẹn</th>
+                    <th>Trạng thái</th>
+                    <th>Hoạt động</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleTableBody">
+                <tr>
+                    <td>1</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>Bảo dưỡng</td>
+                    <td>Đang chờ</td>
+                    <td>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Trần Thị B</td>
+                    <td>Sửa chữa</td>
+                    <td>Hoàn thành</td>
+                    <td>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="back-button-container">
+    <button class="back-button" onclick="window.location.href='quanlilichhen.html'">← Quay lại</button>
+</div>
+
+    </div>
+    
+</body>
+</html>
