@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thêm Xe Mới - Carly</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -147,7 +148,7 @@
             <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
         </div>
         <ul>
-            <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li onclick="window.location.href='dashboard.html'" class="active">QUẢN LÝ THÔNG TIN XE</li>
             <li onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</li>
             <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
             <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
@@ -231,6 +232,44 @@
             <button class="submit-button" onclick="submitForm()">Thêm xe</button>
         </div>
     </div>
+
+    <!-- Modal cho thông báo lỗi ảnh -->
+    <div class="modal fade" id="imageErrorModal" tabindex="-1" aria-labelledby="imageErrorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageErrorModalLabel">Lỗi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Vui lòng chọn ảnh cho tất cả các vị trí (Trái, Sau, Phải)!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal cho thông báo thành công -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Thành công</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Xe và các ảnh đã được thêm thành công!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToIndex()">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function setPosition(position) {
             document.getElementById('tinTrang').value = position === 'moi' ? 'moi' : 'daSuDung';
@@ -242,12 +281,15 @@
             const imagePhai = document.getElementById('imagePhai').files[0];
 
             if (!imageTrai || !imageSau || !imagePhai) {
-                alert('Vui lòng chọn ảnh cho tất cả các vị trí (Trái, Sau, Phải)!');
+                new bootstrap.Modal(document.getElementById('imageErrorModal')).show();
                 return;
             }
 
             // Logic giả lập upload ảnh và thêm xe
-            alert('Xe và các ảnh đã được thêm thành công!');
+            new bootstrap.Modal(document.getElementById('successModal')).show();
+        }
+
+        function redirectToIndex() {
             window.location.href = 'index.html';
         }
     </script>

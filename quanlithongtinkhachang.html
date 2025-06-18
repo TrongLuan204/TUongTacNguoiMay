@@ -316,6 +316,56 @@
         .success-message.active {
             display: block;
         }
+        .error-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+            z-index: 2000;
+            text-align: center;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .error-popup.active {
+            display: block;
+        }
+        .error-popup h3 {
+            margin: 0 0 10px;
+            color: #8b5e57;
+            font-size: 18px;
+        }
+        .error-popup p {
+            margin: 0 0 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        .error-popup button {
+            padding: 8px 15px;
+            background-color: #8b5e57;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Archivo Narrow', sans-serif;
+        }
+        .error-popup button:hover {
+            background-color: #633d38;
+        }
+        .error-field {
+            border: 2px solid red !important;
+        }
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
         .detail-form {
             display: none;
             position: fixed;
@@ -336,7 +386,7 @@
         .detail-form h2 {
             margin-top: 0;
             text-align: center;
-            color: #4a2c2a;
+            color: #333;
             font-size: 20px;
         }
         .detail-form p {
@@ -390,7 +440,7 @@
         .edit-form h2 {
             margin-top: 0;
             text-align: center;
-            color: #4a2c2a;
+            color: #333;
             font-size: 20px;
         }
         .edit-form label {
@@ -443,7 +493,7 @@
             transform: translate(-50%, -50%);
             background-color: #f5f5f5;
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             width: 300px;
             z-index: 1000;
@@ -455,7 +505,7 @@
         }
         .delete-confirm h2 {
             margin-top: 0;
-            color: #4a2c2a;
+            color: #333;
             font-size: 20px;
         }
         .delete-confirm p {
@@ -500,7 +550,7 @@
             <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
             <li onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</li>
             <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
-            <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
+            <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÝ THÔNG TIN KHÁCH HÀNG</li>
             <li onclick="window.location.href='qly_tbao_khan.html'">QUẢN LÝ THÔNG BÁO KHẨN</li>
         </ul>
     </div>
@@ -510,15 +560,15 @@
             <button class="add-customer-btn" onclick="showAddCustomerForm()">Thêm khách hàng mới <i class="fas fa-plus"></i></button>
         </div>
         <div class="search-bar">
-            <input type="text" placeholder="Tên khách hàng, địa chỉ, email, số điện thoại...">
-            <select>
+            <input type="text" id="searchInput" placeholder="Tên khách hàng, địa chỉ, email, số điện thoại...">
+            <select id="customerTypeFilter">
                 <option value="">Chọn nhóm khách hàng</option>
                 <option value="VIP">VIP</option>
                 <option value="Regular">Thường</option>
             </select>
-            <button class="advanced-filter-btn" onclick="showAdvancedFilterForm()">Lọc nâng cao <i class="fas fa-filter"></i></button>
+            <button class="advanced-filter-btn" onclick="showAdvancedFilterForm()">Lọc khách hàng <i class="fas fa-filter"></i></button>
         </div>
-        <table class="customer-table">
+        <table class="customer-table" id="customerTable">
             <thead>
                 <tr>
                     <th>STT</th>
@@ -550,7 +600,7 @@
                     <td>duongminhxyz@gmail.com</td>
                     <td>00123456B</td>
                     <td>07123456B</td>
-                    <td><button onclick="showDetailForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002761', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002761', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                    <td><button onclick="showDetailForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002761', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
                 </tr>
                 <tr>
                     <td>3</td>
@@ -560,7 +610,7 @@
                     <td>dinhhieunguyen248@gmail.com</td>
                     <td>00123456C</td>
                     <td>07123456C</td>
-                    <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002762', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002762', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                    <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002762', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
                 </tr>
                 <tr>
                     <td>4</td>
@@ -570,7 +620,7 @@
                     <td>dinhhieunguyen248@gmail.com</td>
                     <td>00123456D</td>
                     <td>07123456D</td>
-                    <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002763', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002763', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                    <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002763', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
                 </tr>
                 <tr>
                     <td>5</td>
@@ -609,18 +659,22 @@
         <h2>THÊM KHÁCH HÀNG</h2>
         <div class="form-group">
             <label><span>*</span> Họ và tên khách hàng:</label>
-            <input type="text" placeholder="Số CCCD:">
+            <input type="text" id="fullName" placeholder="Nhập họ và tên">
         </div>
         <div class="form-group">
-            <label><span>*</span> Ngày cấp / Nơi cấp:</label>
-            <input type="text" placeholder="dd/mm/yyyy">
+            <label>CCCD:</label>
+            <input type="text" id="cccd" placeholder="Nhập số CCCD">
         </div>
         <div class="form-group">
-            <label><span>*</span> Ngày sinh / Giới tính:</label>
+            <label>Ngày cấp / Nơi cấp:</label>
+            <input type="text" id="issueDate" placeholder="dd/mm/yyyy">
+        </div>
+        <div class="form-group">
+            <label>Ngày sinh / Giới tính:</label>
             <div class="dual-input">
-                <input type="text" placeholder="dd/mm/yyyy">
-                <select>
-                    <option value="">Nam</option>
+                <input type="text" id="birthDate" placeholder="dd/mm/yyyy">
+                <select id="gender">
+                    <option value="">Chọn giới tính</option>
                     <option value="male">Nam</option>
                     <option value="female">Nữ</option>
                 </select>
@@ -629,12 +683,12 @@
         <div class="form-group">
             <label><span>*</span> Địa chỉ:</label>
             <div class="dual-input">
-                <select>
+                <select id="city">
                     <option value="">Tỉnh/thành phố</option>
                     <option value="hanoi">Hà Nội</option>
                     <option value="hcm">TP.HCM</option>
                 </select>
-                <select>
+                <select id="district">
                     <option value="">Quận/huyện</option>
                     <option value="quan1">Quận 1</option>
                     <option value="quan3">Quận 3</option>
@@ -643,18 +697,26 @@
         </div>
         <div class="form-group">
             <label><span>*</span> Địa chỉ cụ thể:</label>
-            <input type="text" placeholder="Phường/xã/thị trấn, Số nhà, tên đường...">
+            <input type="text" id="specificAddress" placeholder="Phường/xã/thị trấn, Số nhà, tên đường...">
         </div>
         <div class="form-group">
             <label><span>*</span> SĐT / Mail:</label>
             <div class="dual-input">
-                <input type="text" placeholder="SĐT">
-                <input type="text" placeholder="Mail">
+                <input type="text" id="phone" placeholder="SĐT">
+                <input type="text" id="email" placeholder="Mail">
             </div>
         </div>
         <div class="form-group">
-            <label><span>*</span> Số Thẻ:</label>
-            <input type="text" placeholder="Mã Thẻ">
+            <label>Loại khách hàng:</label>
+            <select id="customerType">
+                <option value="">Chọn loại khách hàng</option>
+                <option value="VIP">VIP</option>
+                <option value="Regular">Thường</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Số thuế: Mã số thuế:</label>
+            <input type="text" id="taxCode" placeholder="Mã số thuế">
         </div>
         <div class="form-actions">
             <button type="button" class="back-btn" onclick="hideAddCustomerForm()">QUAY LẠI</button>
@@ -707,6 +769,11 @@
     </div>
     <div class="success-message" id="filterSuccessMessage">
         <span>✔</span> Lọc thành công
+    </div>
+    <div class="error-popup" id="errorPopup">
+        <h3>Lỗi nhập liệu</h3>
+        <p id="errorMessage"></p>
+        <button onclick="hideErrorPopup()">OK</button>
     </div>
     <div class="detail-form" id="detailForm">
         <h2>THÔNG TIN KHÁCH HÀNG</h2>
@@ -763,24 +830,134 @@
         <span>✔</span> Lưu thành công
     </div>
     <script>
-        // Basic search functionality
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('.customer-table tbody tr');
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value.trim().toLowerCase();
+                const rows = document.querySelectorAll('.customer-table tbody tr');
+                let hasResults = false;
+                rows.forEach(row => {
+                    const phone = row.cells[2].textContent.toLowerCase();
+                    if (phone.includes(searchTerm)) {
+                        row.style.display = '';
+                        hasResults = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                const tbody = document.querySelector('.customer-table tbody');
+                if (!hasResults && searchTerm) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="no-results">Không có kết quả</td></tr>';
+                    showErrorPopup(`Không tìm thấy khách hàng với số điện thoại ${searchTerm}. Vui lòng kiểm tra lại hoặc thử tiêu chí khác.`);
+                } else if (!searchTerm) {
+                    // Reset to original table if search term is empty
+                    tbody.innerHTML = `
+                        <tr>
+                            <td>1</td>
+                            <td>Nguyễn Đình Hiếu</td>
+                            <td>23456789</td>
+                            <td>VIP</td>
+                            <td>dinhhieunguyen248@gmail.com</td>
+                            <td>00123456A</td>
+                            <td>07123456A</td>
+                            <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '23456789', 'dinhhieunguyen248@gmail.com', '3/6/2004', '0971288904', '001204002760', 'Số 07, Nguyễn Bá Ngọc, Phường Ba Đình, Thành phố Thanh Hóa', 'VIP', 'Sản phẩm Toyota Supra(2/5/2024), Sản phẩm Vinfast VF10(3/5/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đình Hiếu', '23456789', 'dinhhieunguyen248@gmail.com', '3/6/2004', '0971288904', '001204002760', 'Số 07, Nguyễn Bá Ngọc, Phường Ba Đình, Thành phố Thanh Hóa', 'VIP', 'Sản phẩm Toyota Supra(2/5/2024), Sản phẩm Vinfast VF10(3/5/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đình Hiếu')">Xóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Nguyễn Đức Minh</td>
+                            <td>0912345678</td>
+                            <td>VIP</td>
+                            <td>duongminhxyz@gmail.com</td>
+                            <td>00123456B</td>
+                            <td>07123456B</td>
+                            <td><button onclick="showDetailForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002761', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Nguyễn Đình Hiếu</td>
+                            <td>0912345678</td>
+                            <td>VIP</td>
+                            <td>dinhhieunguyen248@gmail.com</td>
+                            <td>00123456C</td>
+                            <td>07123456C</td>
+                            <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002762', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Nguyễn Đình Hiếu</td>
+                            <td>0912345678</td>
+                            <td>VIP</td>
+                            <td>dinhhieunguyen248@gmail.com</td>
+                            <td>00123456D</td>
+                            <td>07123456D</td>
+                            <td><button onclick="showDetailForm('Nguyễn Đình Hiếu', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', '001204002763', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Đức Minh', '0912345678', 'duongminhxyz@gmail.com', '1/1/2000', '0987654321', 'Số 10, Lê Lợi, Quận 1, TP.HCM', 'Regular', 'Sản phẩm Honda Civic(1/6/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Đức Minh')">Xóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Nguyễn Anh Nam</td>
+                            <td>0987654321</td>
+                            <td>VIP</td>
+                            <td>nam.nguyen@email.com</td>
+                            <td>00123456E</td>
+                            <td>07123456E</td>
+                            <td><button onclick="showDetailForm('Nguyễn Anh Nam', '0987654321', 'nam.nguyen@email.com', '15/03/1985', '0901234567', '001204002764', 'Số 5, Trần Phú, Quận 3, TP.HCM', 'VIP', 'Sản phẩm Mazda CX-5(10/06/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Nguyễn Anh Nam', '0987654321', 'nam.nguyen@email.com', '15/03/1985', '0901234567', '001204002764', 'Số 5, Trần Phú, Quận 3, TP.HCM', 'VIP', 'Sản phẩm Mazda CX-5(10/06/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Nguyễn Anh Nam')">Xóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Trần Thị Hương</td>
+                            <td>0912345679</td>
+                            <td>Regular</td>
+                            <td>huong.tran@email.com</td>
+                            <td>00123456F</td>
+                            <td>07123456F</td>
+                            <td><button onclick="showDetailForm('Trần Thị Hương', '0912345679', 'huong.tran@email.com', '20/07/1990', '0934567890', '001204002765', 'Số 12, Lê Lợi, Quận 5, TP.HCM', 'Regular', 'Sản phẩm Hyundai Tucson(12/06/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Trần Thị Hương', '0912345679', 'huong.tran@email.com', '20/07/1990', '0934567890', '001204002765', 'Số 12, Lê Lợi, Quận 5, TP.HCM', 'Regular', 'Sản phẩm Hyundai Tucson(12/06/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Trần Thị Hương')">Xóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Lê Văn Tuấn</td>
+                            <td>0976543210</td>
+                            <td>VIP</td>
+                            <td>tuan.le@email.com</td>
+                            <td>00123456G</td>
+                            <td>07123456G</td>
+                            <td><button onclick="showDetailForm('Lê Văn Tuấn', '0976543210', 'tuan.le@email.com', '10/12/1982', '0923456789', '001204002766', 'Số 8, Nguyễn Trãi, Quận 1, TP.HCM', 'VIP', 'Sản phẩm Toyota Camry(15/06/2024)')">Kiểm tra thông tin chi tiết</button> <button onclick="showEditForm('Lê Văn Tuấn', '0976543210', 'tuan.le@email.com', '10/12/1982', '0923456789', '001204002766', 'Số 8, Nguyễn Trãi, Quận 1, TP.HCM', 'VIP', 'Sản phẩm Toyota Camry(15/06/2024)')">Chỉnh sửa</button> <button onclick="showDeleteConfirm('Lê Văn Tuấn')">Xóa</button></td>
+                        </tr>
+                    `;
+                }
+            }
         });
 
         // Show add customer form
         function showAddCustomerForm() {
             document.getElementById('addCustomerForm').classList.add('active');
+            // Reset form and remove error styles
+            resetAddCustomerForm();
         }
 
         // Hide add customer form
         function hideAddCustomerForm() {
             document.getElementById('addCustomerForm').classList.remove('active');
+            resetAddCustomerForm();
+        }
+
+        // Reset add customer form
+        function resetAddCustomerForm() {
+            const inputs = document.querySelectorAll('#addCustomerForm input, #addCustomerForm select');
+            inputs.forEach(input => {
+                input.classList.remove('error-field');
+            });
+            document.getElementById('fullName').value = '';
+            document.getElementById('cccd').value = '';
+            document.getElementById('issueDate').value = '';
+            document.getElementById('birthDate').value = '';
+            document.getElementById('gender').value = '';
+            document.getElementById('city').value = '';
+            document.getElementById('district').value = '';
+            document.getElementById('specificAddress').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('customerType').value = '';
+            document.getElementById('taxCode').value = '';
         }
 
         // Show advanced filter form
@@ -803,20 +980,55 @@
             }, 2000);
         }
 
-        // Show success message and hide form
+        // Show error popup
+        function showErrorPopup(message) {
+            const errorPopup = document.getElementById('errorPopup');
+            document.getElementById('errorMessage').textContent = message;
+            errorPopup.classList.add('active');
+        }
+
+        // Hide error popup
+        function hideErrorPopup() {
+            document.getElementById('errorPopup').classList.remove('active');
+        }
+
+        // Confirm customer addition
         function confirmCustomer() {
+            // Get form values
+            const fullName = document.getElementById('fullName').value.trim();
+            const specificAddress = document.getElementById('specificAddress').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+
+            // Reset error styles
+            const inputs = document.querySelectorAll('#addCustomerForm input, #addCustomerForm select');
+            inputs.forEach(input => {
+                input.classList.remove('error-field');
+            });
+
+            // Validate required fields
+            if (!fullName) {
+                document.getElementById('fullName').classList.add('error-field');
+                showErrorPopup('Vui lòng điền đầy đủ trường Họ tên.');
+                return;
+            }
+            if (!phone) {
+                document.getElementById('phone').classList.add('error-field');
+                showErrorPopup('Vui lòng điền đầy đủ trường Số điện thoại.');
+                return;
+            }
+            if (!specificAddress) {
+                document.getElementById('specificAddress').classList.add('error-field');
+                showErrorPopup('Vui lòng điền đầy đủ trường Địa chỉ cụ thể.');
+                return;
+            }
+
+            // If validation passes, show success message
             hideAddCustomerForm();
             const successMessage = document.getElementById('successMessage');
             successMessage.classList.add('active');
             setTimeout(() => {
                 successMessage.classList.remove('active');
             }, 2000);
-        }
-
-        // Placeholder for save customer function
-        function saveCustomer() {
-            alert('Thông tin khách hàng đã được lưu!');
-            hideAddCustomerForm();
         }
 
         // Show detail form with customer data

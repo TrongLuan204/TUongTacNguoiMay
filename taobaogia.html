@@ -82,8 +82,12 @@
         .info-block p {
             margin: 10px 0;
         }
-        .info-block p strong {
-            color: #73605B;
+        .info-block input {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #73605B;
+            border-radius: 4px;
         }
         .info-block ul {
             margin: 10px 0 0 20px;
@@ -120,11 +124,12 @@
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo">
+       <div class="logo">
             <img src="https://scontent.fhan14-1.fna.fbcdn.net/v/t1.15752-9/494822035_503849302755885_659653350863570068_n.png?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEn62WXWaxFdAnJ3bjxy32ekUExjWGR_NKRQTGNYZH80pzSxQESII8yRZ-Fow1hYaYdJw6nQEJnpFCKm4u3AROf&_nc_ohc=UMRM320lq_0Q7kNvwF1NRs7&_nc_oc=AdnbwfwDFmeX4htYSLfsLXNSVk7dhY7wl2BT7pO5e9Ha3NR6Tt1ihuuWDqTZRumy7elc7LENM_FboWPeOpepGVRH&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&oh=03_Q7cD2gFZVwO6xEolA50C7p9bsud_OgvmztTji9gwUGJPiD1YwA&oe=68725D71" alt="Carly Logo">
+
         </div>
         <ul>
-           <li onclick="window.location.href='dashboard.html'">QUẢN LÝ THÔNG TIN XE</li>
+            <li class="active">QUẢN LÝ THÔNG TIN XE</li>
             <li onclick="window.location.href='quanlilichhen.html'">QUẢN LÝ LỊCH HẸN</li>
             <li onclick="window.location.href='bao-gia-detail.html'">TẠO VÀ LẬP BÁO GIÁ</li>
             <li onclick="window.location.href='quanlithongtinkhachang.html'">QUẢN LÍ THÔNG TIN KHÁCH HÀNG</li>
@@ -139,10 +144,10 @@
         </div>
         <div class="info-block">
             <h3>THÔNG TIN KHÁCH HÀNG</h3>
-            <p><strong>Tên:</strong> Nguyễn Văn A</p>
-            <p><strong>Số điện thoại:</strong> 0901234567</p>
-            <p><strong>Email:</strong> nguyenvana@example.com</p>
-            <p><strong>Địa chỉ:</strong> 123 Đường ABC, Quận 1, TP. HCM</p>
+            <p><strong>Tên:</strong> <input type="text" id="customerName" placeholder="Nhập tên"></p>
+            <p><strong>Số điện thoại:</strong> <input type="text" id="phone" placeholder="Nhập số điện thoại"></p>
+            <p><strong>Email:</strong> <input type="email" id="email" placeholder="Nhập email"></p>
+            <p><strong>Địa chỉ:</strong> <input type="text" id="address" placeholder="Nhập địa chỉ"></p>
         </div>
         <div class="info-block">
             <h3>CHI TIẾT CẤU HÌNH XE</h3>
@@ -175,9 +180,23 @@
         </div>
         <div class="control-buttons">
             <button>Lưu Nháp</button>
-            <button onclick="window.location.href='taohopdong.html'">Tạo Hợp Đồng</button>
+            <button onclick="validateAndRedirect()">Tạo Hợp Đồng</button>
             <button>Huỷ</button>
         </div>
     </div>
+    <script>
+        function validateAndRedirect() {
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+
+            if (!name || !phone || !email || !address) {
+                alert('Vui lòng nhập đầy đủ thông tin khách hàng!');
+                return;
+            }
+            window.location.href = 'taohopdong.html';
+        }
+    </script>
 </body>
 </html>
